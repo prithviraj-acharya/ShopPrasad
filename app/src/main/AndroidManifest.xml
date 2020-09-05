@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.prithviraj.shopprasad">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".activities.customer.UploadProductActivity"></activity>
+        <activity android:name=".activities.ChangePassword" />
+        <activity android:name=".activities.panditji.PanditProfileActivity" />
+        <activity android:name=".activities.panditji.MyBookingActivity" />
+        <activity android:name=".activities.panditji.PanditDashboardActivity" />
+        <activity android:name=".activities.customer.ChanegPasswordActivity" />
+        <activity android:name=".activities.customer.MyOrdersActivity" />
+        <activity android:name=".activities.customer.MyProfileActivity" />
+        <activity android:name=".activities.customer.CartActivity" />
+        <activity android:name=".activities.customer.PoojaActivity" />
+        <activity android:name=".activities.customer.PanditActivity" />
+        <activity android:name=".activities.customer.ProductsActivity" />
+        <activity android:name=".activities.OtpActivity" />
+        <activity
+            android:name=".activities.customer.CustomerDashboard"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.customer.RegistrationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ShopPrasad</string>
+    <string name="enter_your_email">Enter your phone number</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="enter_your_alternative_phone_number">Enter your alternative number</string>
+    <string name="by_registering_you_are_agreeing_to_terms_and_conditions">By registering, you are agreeing to our <u>Terms and Conditions</u></string>
+    <string name="and_privacy_policy">and <u>Privacy Policy</u>.</string>
+</resources>
