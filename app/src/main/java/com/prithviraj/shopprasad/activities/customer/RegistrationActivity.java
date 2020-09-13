@@ -34,14 +34,14 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RegistrationActivity extends AppCompatActivity implements  AdapterView.OnItemSelectedListener {
+public class RegistrationActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     TextView alreadyHaveAccnt;
     Button registerButton;
     EditText phoneNumber;
     SharedPreference sharedPreference;
 
-    String[] country = { "Please Select a user type","Normal User", "Pandit"};
+    String[] country = {"Please Select a user type", "Normal User", "Pandit"};
     int type;
 
     @Override
@@ -53,7 +53,7 @@ public class RegistrationActivity extends AppCompatActivity implements  AdapterV
         onClickListeners();
     }
 
-    void init(){
+    void init() {
         alreadyHaveAccnt = findViewById(R.id.textView18);
         registerButton = findViewById(R.id.button7);
 
@@ -65,13 +65,13 @@ public class RegistrationActivity extends AppCompatActivity implements  AdapterV
         spin.setOnItemSelectedListener(this);
 
         //Creating the ArrayAdapter instance having the country list
-        ArrayAdapter aa = new ArrayAdapter(this,android.R.layout.simple_spinner_item,country);
+        ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, country);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
         spin.setAdapter(aa);
     }
 
-    void onClickListeners(){
+    void onClickListeners() {
         alreadyHaveAccnt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,9 +90,10 @@ public class RegistrationActivity extends AppCompatActivity implements  AdapterV
     //Performing action onItemSelected and onNothing selected
     @Override
     public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
-       // Toast.makeText(getApplicationContext(),country[position] , Toast.LENGTH_LONG).show();
-        type=position+1;
+        // Toast.makeText(getApplicationContext(),country[position] , Toast.LENGTH_LONG).show();
+        type = position + 1;
     }
+
     @Override
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
@@ -101,14 +102,12 @@ public class RegistrationActivity extends AppCompatActivity implements  AdapterV
     public void registrationApi() {
 
 
-        if (phoneNumber.getText().toString().trim().equals("") || phoneNumber.getText().toString().trim().length()<10 ) {
+        if (phoneNumber.getText().toString().trim().equals("") || phoneNumber.getText().toString().trim().length() < 10) {
 
             new ErrorDialog("Please fill up a valid phone number.", RegistrationActivity.this).showDialog();
-        } else if(type<2){
+        } else if (type < 2) {
             new ErrorDialog("Please select a user type.", RegistrationActivity.this).showDialog();
-        }
-
-        else {
+        } else {
 
             Map<String, String> param = new HashMap<>();
 
@@ -131,12 +130,12 @@ public class RegistrationActivity extends AppCompatActivity implements  AdapterV
                     try {
                         JSONObject jsonObject = new JSONObject(s);
 
-                        if(jsonObject.getBoolean("success")){
+                        if (jsonObject.getBoolean("success")) {
 
                             Intent in = new Intent(RegistrationActivity.this, OtpActivity.class);
-                            in.putExtra("userId",jsonObject.getJSONObject("data").getInt("id"));
+                            in.putExtra("userId", jsonObject.getJSONObject("data").getInt("id"));
                             startActivity(in);
-                        }else {
+                        } else {
 
                             new ErrorDialog(jsonObject.getJSONArray("msg").getString(0), RegistrationActivity.this).showDialog();
                         }

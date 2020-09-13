@@ -77,7 +77,7 @@ public class OtpActivity extends AppCompatActivity {
     public void verifyOtp() {
 
 
-        if (otp.getText().toString().trim().equals("") || otp.getText().toString().trim().length()<4 ) {
+        if (otp.getText().toString().trim().equals("") || otp.getText().toString().trim().length() < 4) {
 
             new ErrorDialog("Please enter a valid OTP to continue.", OtpActivity.this).showDialog();
         } else {
@@ -86,7 +86,7 @@ public class OtpActivity extends AppCompatActivity {
 
 
             param.put("otp", otp.getText().toString().trim());
-            param.put("user_id", String.valueOf(getIntent().getExtras().getInt("userId",0)));
+            param.put("user_id", String.valueOf(getIntent().getExtras().getInt("userId", 0)));
 
             Log.d("zxcv: ", param.toString());
 
@@ -103,22 +103,22 @@ public class OtpActivity extends AppCompatActivity {
                     try {
                         JSONObject jsonObject = new JSONObject(s);
 
-                        if(jsonObject.getBoolean("success")){
+                        if (jsonObject.getBoolean("success")) {
 
                             sharedPreference.setUserToken(jsonObject.getString("token"));
                             sharedPreference.setUserType(jsonObject.getJSONObject("data").getString("type"));
 
-                            if(jsonObject.getJSONObject("data").getString("type").equalsIgnoreCase("2")){
+                            if (jsonObject.getJSONObject("data").getString("type").equalsIgnoreCase("2")) {
 
                                 Intent intent = new Intent(OtpActivity.this, CustomerDashboard.class);
                                 startActivity(intent);
-                            } else{
+                            } else {
                                 Intent intent = new Intent(OtpActivity.this, PanditDashboardActivity.class);
                                 startActivity(intent);
                             }
 
 
-                        }else {
+                        } else {
 
                             new ErrorDialog(jsonObject.getString("msg"), OtpActivity.this).showDialog();
                         }
@@ -148,48 +148,48 @@ public class OtpActivity extends AppCompatActivity {
 
     public void resendOtp() {
 
-            Map<String, String> param = new HashMap<>();
+        Map<String, String> param = new HashMap<>();
 
 
-            param.put("user_id", String.valueOf(getIntent().getExtras().getInt("userId",0)));
+        param.put("user_id", String.valueOf(getIntent().getExtras().getInt("userId", 0)));
 
-            Log.d("zxcv: ", param.toString());
+        Log.d("zxcv: ", param.toString());
 
-            final ProgressDialog dialog = ProgressDialog.show(OtpActivity.this, "",
-                    "Loading. Please wait...", true);
+        final ProgressDialog dialog = ProgressDialog.show(OtpActivity.this, "",
+                "Loading. Please wait...", true);
 
-            new VolleyServiceCall(Request.Method.POST, Url.RESEND_OTP, null, param, null, OtpActivity.this) {
-                @Override
-                public void onResponse(String s) {
-                    dialog.cancel();
+        new VolleyServiceCall(Request.Method.POST, Url.RESEND_OTP, null, param, null, OtpActivity.this) {
+            @Override
+            public void onResponse(String s) {
+                dialog.cancel();
 
-                    Log.d("zxcv", s);
+                Log.d("zxcv", s);
 
-                    try {
-                        JSONObject jsonObject = new JSONObject(s);
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
 
-                        new ErrorDialog(jsonObject.getString("msg"), OtpActivity.this).showDialog();
+                    new ErrorDialog(jsonObject.getString("msg"), OtpActivity.this).showDialog();
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onError(VolleyError error, String errorMessage) {
+                dialog.cancel();
+                Log.d("zxcv ", errorMessage);
+                ApiErrorAction apiErrorAction = new ApiErrorAction(error, errorMessage, OtpActivity.this) {
+                    @Override
+                    public void setAction(boolean action) {
+                        if (action)
+                            resendOtp();
                     }
-
-                }
-
-                @Override
-                public void onError(VolleyError error, String errorMessage) {
-                    dialog.cancel();
-                    Log.d("zxcv ", errorMessage);
-                    ApiErrorAction apiErrorAction = new ApiErrorAction(error, errorMessage, OtpActivity.this) {
-                        @Override
-                        public void setAction(boolean action) {
-                            if (action)
-                                resendOtp();
-                        }
-                    };
-                    apiErrorAction.createDialog();
-                }
-            }.start();
+                };
+                apiErrorAction.createDialog();
+            }
+        }.start();
 
     }
 

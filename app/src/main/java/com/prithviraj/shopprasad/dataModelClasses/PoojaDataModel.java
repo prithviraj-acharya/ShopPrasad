@@ -2,7 +2,7 @@ package com.prithviraj.shopprasad.dataModelClasses;
 
 public class PoojaDataModel {
     int id;
-    String pujaName, pujaPrice, pujaImage;
+    String pujaName, pujaPrice, pujaImage, percentageOff, offerPrice;
 
     public int getId() {
         return id;
@@ -34,5 +34,21 @@ public class PoojaDataModel {
 
     public void setPujaImage(String pujaImage) {
         this.pujaImage = pujaImage;
+    }
+
+    public String getPercentageOff() {
+        return percentageOff;
+    }
+
+    public void setPercentageOff(String percentageOff) {
+        this.percentageOff = percentageOff;
+    }
+
+    public String getOfferPrice() {
+        return offerPrice;
+    }
+
+    public void setOfferPrice(String offerPrice) {
+        this.offerPrice = offerPrice;
     }
 }

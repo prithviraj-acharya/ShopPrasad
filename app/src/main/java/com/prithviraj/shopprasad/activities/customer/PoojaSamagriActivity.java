@@ -19,11 +19,12 @@ import com.android.volley.VolleyError;
 import com.prithviraj.myvollyimplementation.UtilityClasses.ApiErrorAction;
 import com.prithviraj.myvollyimplementation.VolleyServiceCall;
 import com.prithviraj.shopprasad.R;
-import com.prithviraj.shopprasad.adapters.PoojaListForCustomerAdapter;
-import com.prithviraj.shopprasad.adapters.ProductListForCustomerAdapter;
+import com.prithviraj.shopprasad.adapters.ProductSamagriListForCustomerAdapter;
 import com.prithviraj.shopprasad.dataModelClasses.CartDataModel;
 import com.prithviraj.shopprasad.dataModelClasses.PoojaDataModel;
+import com.prithviraj.shopprasad.interfaces.AddToCartPoojaSamagriList;
 import com.prithviraj.shopprasad.interfaces.AddToCartProductList;
+import com.prithviraj.shopprasad.interfaces.ClickPoojaSamagriList;
 import com.prithviraj.shopprasad.interfaces.ClickProductList;
 import com.prithviraj.shopprasad.utils.CommonClass;
 import com.prithviraj.shopprasad.utils.SharedPreference;
@@ -36,14 +37,14 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ProductsActivity extends AppCompatActivity {
+public class PoojaSamagriActivity extends AppCompatActivity {
 
     ImageView backIcon;
     SharedPreference sharedPreference;
+    ImageView cart;
 
     RecyclerView recyclerView;
-    ProductListForCustomerAdapter productListForCustomerAdapter;
-    ImageView cart;
+    ProductSamagriListForCustomerAdapter productSamagriListForCustomerAdapter;
 
     ConstraintLayout addToCartDot;
     TextView itemNumber;
@@ -51,47 +52,48 @@ public class ProductsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_products);
+        setContentView(R.layout.activity_pooja_samagri);
 
         init();
         onClickListeners();
-        getProductApi();
+        getPujaSamagriList();
         getCart();
 
-        CommonClass.GLOBAL_VARIABLE_CLASS.clickProductList = new ClickProductList() {
+        CommonClass.GLOBAL_VARIABLE_CLASS.clickPoojaSamagriList = new ClickPoojaSamagriList() {
             @Override
             public void passProductId(int productId) {
-                Intent intent = new Intent(ProductsActivity.this,ProductDetails.class);
+                Intent intent = new Intent(PoojaSamagriActivity.this,ProductDetails.class);
                 intent.putExtra("productId",productId);
                 startActivity(intent);
             }
         };
 
-        CommonClass.GLOBAL_VARIABLE_CLASS.addToCartProductList = new AddToCartProductList() {
+        CommonClass.GLOBAL_VARIABLE_CLASS.addToCartPoojaSamagriList = new AddToCartPoojaSamagriList() {
             @Override
             public void passPosition(int position) {
-                PoojaDataModel poojaDataModel = CommonClass.GLOBAL_LIST_CLASS.productList.get(position);
+                PoojaDataModel poojaDataModel = CommonClass.GLOBAL_LIST_CLASS.poojaaSamagriList.get(position);
                 addToCart(poojaDataModel.getId(),getQuantity(poojaDataModel.getId())+1);
             }
         };
     }
 
     void init(){
-        backIcon = findViewById(R.id.imageView);
-        sharedPreference = new SharedPreference(ProductsActivity.this);
+
+        sharedPreference = new SharedPreference(PoojaSamagriActivity.this);
 
         cart = findViewById(R.id.cart);
 
+        backIcon = findViewById(R.id.imageView);
         recyclerView = findViewById(R.id.recyclerView);
 
-        recyclerView.setLayoutManager(new GridLayoutManager(ProductsActivity.this, 2));
+        recyclerView.setLayoutManager(new GridLayoutManager(PoojaSamagriActivity.this, 2));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        productListForCustomerAdapter = new ProductListForCustomerAdapter();
-        recyclerView.setAdapter(productListForCustomerAdapter);
+        productSamagriListForCustomerAdapter = new ProductSamagriListForCustomerAdapter();
+        recyclerView.setAdapter(productSamagriListForCustomerAdapter);
 
         addToCartDot = findViewById(R.id.addToCartDot);
         itemNumber = findViewById(R.id.itemNumber);
+
     }
 
     void onClickListeners(){
@@ -105,7 +107,7 @@ public class ProductsActivity extends AppCompatActivity {
         cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent in = new Intent(ProductsActivity.this, CartActivity.class);
+                Intent in = new Intent(PoojaSamagriActivity.this, CartActivity.class);
                 startActivity(in);
             }
         });
@@ -118,17 +120,17 @@ public class ProductsActivity extends AppCompatActivity {
     }
 
 
-    public void getProductApi() {
+    public void getPujaSamagriList() {
 
-        CommonClass.GLOBAL_LIST_CLASS.productList.clear();
+        CommonClass.GLOBAL_LIST_CLASS.poojaaSamagriList.clear();
 
-        final ProgressDialog dialog = ProgressDialog.show(ProductsActivity.this, "",
+        final ProgressDialog dialog = ProgressDialog.show(PoojaSamagriActivity.this, "",
                 "Loading. Please wait...", true);
 
         Map<String, String> header = new HashMap<>();
         header.put("Authorization", "Bearer "+sharedPreference.getUserToken());
 
-        new VolleyServiceCall(Request.Method.GET, Url.PRODUCT_LIST, header, null, null, ProductsActivity.this) {
+        new VolleyServiceCall(Request.Method.GET, Url.SAMAGRI_LIST, header, null, null, PoojaSamagriActivity.this) {
             @Override
             public void onResponse(String s) {
                 dialog.cancel();
@@ -144,15 +146,14 @@ public class ProductsActivity extends AppCompatActivity {
                         poojaDataModel.setPujaName(pujaArray.getJSONObject(i).getString("name"));
                         poojaDataModel.setPujaPrice(pujaArray.getJSONObject(i).getString("price"));
                         poojaDataModel.setPujaImage(pujaArray.getJSONObject(i).getString("image"));
+                        poojaDataModel.setId(pujaArray.getJSONObject(i).getInt("id"));
                         poojaDataModel.setPercentageOff(pujaArray.getJSONObject(i).getString("percentage_off"));
                         poojaDataModel.setOfferPrice(pujaArray.getJSONObject(i).getString("offer_price"));
 
-                        poojaDataModel.setId(pujaArray.getJSONObject(i).getInt("id"));
-
-                        CommonClass.GLOBAL_LIST_CLASS.productList.add(poojaDataModel);
+                        CommonClass.GLOBAL_LIST_CLASS.poojaaSamagriList.add(poojaDataModel);
                     }
 
-                    productListForCustomerAdapter.notifyDataSetChanged();
+                    productSamagriListForCustomerAdapter.notifyDataSetChanged();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -164,11 +165,11 @@ public class ProductsActivity extends AppCompatActivity {
             public void onError(VolleyError error, String errorMessage) {
                 dialog.cancel();
                 Log.d("zxcv ", errorMessage);
-                ApiErrorAction apiErrorAction = new ApiErrorAction(error, errorMessage, ProductsActivity.this) {
+                ApiErrorAction apiErrorAction = new ApiErrorAction(error, errorMessage, PoojaSamagriActivity.this) {
                     @Override
                     public void setAction(boolean action) {
                         if (action)
-                            getProductApi();
+                            getPujaSamagriList();
                     }
                 };
                 apiErrorAction.createDialog();
@@ -189,7 +190,7 @@ public class ProductsActivity extends AppCompatActivity {
         param.put("quantity",String.valueOf(quantity));
 
 
-        new VolleyServiceCall(Request.Method.POST, Url.ADD_TO_CART, header, param, null, ProductsActivity.this) {
+        new VolleyServiceCall(Request.Method.POST, Url.ADD_TO_CART, header, param, null, PoojaSamagriActivity.this) {
             @Override
             public void onResponse(String s) {
 
@@ -202,7 +203,7 @@ public class ProductsActivity extends AppCompatActivity {
             public void onError(VolleyError error, String errorMessage) {
                 //  dialog.cancel();
                 Log.d("zxcv ", errorMessage);
-                ApiErrorAction apiErrorAction = new ApiErrorAction(error, errorMessage, ProductsActivity.this) {
+                ApiErrorAction apiErrorAction = new ApiErrorAction(error, errorMessage, PoojaSamagriActivity.this) {
                     @Override
                     public void setAction(boolean action) {
                         if (action)
@@ -222,7 +223,7 @@ public class ProductsActivity extends AppCompatActivity {
         Map<String, String> header = new HashMap<>();
         header.put("Authorization", "Bearer " + sharedPreference.getUserToken());
 
-        new VolleyServiceCall(Request.Method.GET, Url.MY_CART, header, null, null, ProductsActivity.this) {
+        new VolleyServiceCall(Request.Method.GET, Url.MY_CART, header, null, null, PoojaSamagriActivity.this) {
             @Override
             public void onResponse(String s) {
 
@@ -268,7 +269,7 @@ public class ProductsActivity extends AppCompatActivity {
             @Override
             public void onError(VolleyError error, String errorMessage) {
                 Log.d("zxcv ", errorMessage);
-                ApiErrorAction apiErrorAction = new ApiErrorAction(error, errorMessage, ProductsActivity.this) {
+                ApiErrorAction apiErrorAction = new ApiErrorAction(error, errorMessage, PoojaSamagriActivity.this) {
                     @Override
                     public void setAction(boolean action) {
                         if (action)
@@ -294,4 +295,5 @@ public class ProductsActivity extends AppCompatActivity {
 
         return 0;
     }
+
 }

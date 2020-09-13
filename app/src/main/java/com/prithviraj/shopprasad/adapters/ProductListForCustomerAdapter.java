@@ -1,5 +1,6 @@
 package com.prithviraj.shopprasad.adapters;
 
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.prithviraj.shopprasad.R;
@@ -27,13 +29,39 @@ public class ProductListForCustomerAdapter extends RecyclerView.Adapter<ProductL
     public void onBindViewHolder(@NonNull ProductListViewHolder holder, final int position) {
 
         holder.productName.setText(CommonClass.GLOBAL_LIST_CLASS.productList.get(position).getPujaName());
-        holder.productPrice.setText(String.format("₹ %s", CommonClass.GLOBAL_LIST_CLASS.productList.get(position).getPujaPrice()));
 
-            if(!CommonClass.GLOBAL_LIST_CLASS.productList.get(position).getPujaImage().equalsIgnoreCase("null"))
+        if (CommonClass.GLOBAL_LIST_CLASS.productList.get(position).getPercentageOff().equalsIgnoreCase("null")) {
+            holder.offerPrice.setVisibility(View.INVISIBLE);
+            holder.percentageOff.setVisibility(View.INVISIBLE);
+            holder.productPrice.setText(String.format("₹ %s", CommonClass.GLOBAL_LIST_CLASS.productList.get(position).getPujaPrice()));
+        } else {
+            holder.percentageOff.setText(String.format("%s %% OFF", CommonClass.GLOBAL_LIST_CLASS.productList.get(position).getPercentageOff()));
+            holder.offerPrice.setText(String.format("₹ %s", CommonClass.GLOBAL_LIST_CLASS.productList.get(position).getPujaPrice()));
+            holder.offerPrice.setPaintFlags(holder.offerPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+            holder.productPrice.setText(String.format("₹ %s", CommonClass.GLOBAL_LIST_CLASS.productList.get(position).getOfferPrice()));
+        }
+
+
+        if (!CommonClass.GLOBAL_LIST_CLASS.productList.get(position).getPujaImage().equalsIgnoreCase("null"))
             Picasso.get()
                     .load(CommonClass.GLOBAL_LIST_CLASS.productList.get(position).getPujaImage())
                     .into(holder.productImage);
 
+
+        holder.productCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CommonClass.GLOBAL_VARIABLE_CLASS.clickProductList.passProductId(CommonClass.GLOBAL_LIST_CLASS.productList.get(position).getId());
+            }
+        });
+
+        holder.addToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CommonClass.GLOBAL_VARIABLE_CLASS.addToCartProductList.passPosition(position);
+            }
+        });
 
     }
 
@@ -44,18 +72,22 @@ public class ProductListForCustomerAdapter extends RecyclerView.Adapter<ProductL
 
     static class ProductListViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView productName, productPrice;
+        private TextView productName, productPrice, offerPrice, percentageOff;
         private ImageView productImage;
         private CardView productCard;
+        private TextView addToCart;
 
 
         public ProductListViewHolder(@NonNull View itemView) {
             super(itemView);
 
             productName = itemView.findViewById(R.id.productName);
-            productPrice = itemView.findViewById(R.id.productPrice);
+            offerPrice = itemView.findViewById(R.id.productPrice);
             productImage = itemView.findViewById(R.id.productImage);
             productCard = itemView.findViewById(R.id.productCard);
+            productPrice = itemView.findViewById(R.id.productPrice2);
+            percentageOff = itemView.findViewById(R.id.percentageOff);
+            addToCart = itemView.findViewById(R.id.textView4);
         }
     }
 }

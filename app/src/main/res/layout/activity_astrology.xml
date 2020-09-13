@@ -13,7 +13,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/button_background"
-        android:text="Update Profile"
+        android:text="Upload Details"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -21,14 +21,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtPhone" />
+        app:layout_constraintTop_toBottomOf="@+id/timeOfBirth" />
 
     <EditText
         android:id="@+id/edtName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="52dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/text_background"
         android:elevation="10dp"
@@ -40,9 +40,47 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
-    <TextView
+    <EditText
+        android:id="@+id/dateOfBirth"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/text_background"
+        android:drawablePadding="10dp"
+        android:elevation="10dp"
+        android:ems="10"
+        android:focusable="false"
+        android:hint="Enter Date of Birth"
+        android:inputType="none"
+        android:padding="15dp"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edtAddress" />
+    <EditText
+        android:id="@+id/edtAddress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/text_background"
+        android:elevation="10dp"
+        android:ems="10"
+        android:hint="Enter Place of Birth"
+        android:inputType="textPersonName"
+        android:padding="15dp"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtPhone" />
+
+    <EditText
         android:id="@+id/edtPhone"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -52,6 +90,8 @@
         android:background="@drawable/text_background"
         android:elevation="10dp"
         android:ems="10"
+        android:hint="Phone number"
+        android:inputType="phone"
         android:maxLength="10"
         android:padding="15dp"
         android:textSize="16sp"
@@ -84,7 +124,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="My Profile"
+            android:text="Astrology"
             android:textAllCaps="true"
             android:textColor="@color/white"
             android:textSize="18sp"
@@ -95,28 +135,25 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ImageView
-        android:id="@+id/profile_image"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-        app:srcCompat="@drawable/ic_person" />
-
-    <ImageView
-        android:id="@+id/add_icon"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/timeOfBirth"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/profile_image"
-        app:layout_constraintEnd_toEndOf="@id/profile_image"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/profile_image"
-        app:layout_constraintTop_toTopOf="@+id/profile_image"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/ic_plus" />
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/text_background"
+        android:drawablePadding="10dp"
+        android:elevation="10dp"
+        android:ems="10"
+        android:focusable="false"
+        android:hint="Enter Time of Birth"
+        android:inputType="none"
+        android:padding="15dp"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dateOfBirth" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

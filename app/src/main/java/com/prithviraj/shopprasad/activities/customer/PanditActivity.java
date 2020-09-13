@@ -48,7 +48,7 @@ public class PanditActivity extends AppCompatActivity {
         getPanditList();
     }
 
-    void init(){
+    void init() {
         sharedPreference = new SharedPreference(PanditActivity.this);
         backIcon = findViewById(R.id.imageView);
 
@@ -61,7 +61,7 @@ public class PanditActivity extends AppCompatActivity {
 
     }
 
-    void onClickListeners(){
+    void onClickListeners() {
         backIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,7 +78,7 @@ public class PanditActivity extends AppCompatActivity {
                 "Loading. Please wait...", true);
 
         Map<String, String> header = new HashMap<>();
-        header.put("Authorization", "Bearer "+sharedPreference.getUserToken());
+        header.put("Authorization", "Bearer " + sharedPreference.getUserToken());
 
         new VolleyServiceCall(Request.Method.GET, Url.PANDIT_LIST, header, null, null, PanditActivity.this) {
             @Override
@@ -90,7 +90,7 @@ public class PanditActivity extends AppCompatActivity {
                 try {
                     JSONArray pujaArray = new JSONObject(s).getJSONArray("data");
 
-                    for(int i = 0;i<pujaArray.length();i++){
+                    for (int i = 0; i < pujaArray.length(); i++) {
                         PoojaDataModel poojaDataModel = new PoojaDataModel();
 
                         poojaDataModel.setPujaName(pujaArray.getJSONObject(i).getString("full_name"));

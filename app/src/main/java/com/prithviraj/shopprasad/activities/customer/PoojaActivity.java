@@ -40,7 +40,7 @@ public class PoojaActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pooja );
+        setContentView(R.layout.activity_pooja);
 
 
         init();
@@ -49,7 +49,7 @@ public class PoojaActivity extends AppCompatActivity {
 
     }
 
-    void init(){
+    void init() {
 
         sharedPreference = new SharedPreference(PoojaActivity.this);
 
@@ -64,7 +64,7 @@ public class PoojaActivity extends AppCompatActivity {
 
     }
 
-    void onClickListeners(){
+    void onClickListeners() {
         backIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,7 +81,7 @@ public class PoojaActivity extends AppCompatActivity {
                 "Loading. Please wait...", true);
 
         Map<String, String> header = new HashMap<>();
-        header.put("Authorization", "Bearer "+sharedPreference.getUserToken());
+        header.put("Authorization", "Bearer " + sharedPreference.getUserToken());
 
         new VolleyServiceCall(Request.Method.GET, Url.PUJA_LIST, header, null, null, PoojaActivity.this) {
             @Override
@@ -93,7 +93,7 @@ public class PoojaActivity extends AppCompatActivity {
                 try {
                     JSONArray pujaArray = new JSONObject(s).getJSONArray("data");
 
-                    for(int i = 0;i<pujaArray.length();i++){
+                    for (int i = 0; i < pujaArray.length(); i++) {
                         PoojaDataModel poojaDataModel = new PoojaDataModel();
 
                         poojaDataModel.setPujaName(pujaArray.getJSONObject(i).getString("name"));

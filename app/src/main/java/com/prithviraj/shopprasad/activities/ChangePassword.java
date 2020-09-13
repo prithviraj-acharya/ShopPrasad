@@ -21,12 +21,12 @@ public class ChangePassword extends AppCompatActivity {
         onClickListeners();
     }
 
-    void init(){
+    void init() {
         backIcon = findViewById(R.id.imageView);
 
     }
 
-    void onClickListeners(){
+    void onClickListeners() {
         backIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

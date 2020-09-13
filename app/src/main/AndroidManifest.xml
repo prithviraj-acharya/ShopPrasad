@@ -12,7 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.customer.UploadProductActivity"></activity>
+        <activity android:name=".activities.customer.MyAddressActivity"></activity>
+        <activity android:name=".activities.customer.ProductDetails" />
+        <activity android:name=".activities.customer.PoojaSamagriActivity" />
+        <activity android:name=".activities.customer.AstrologyActivity" />
+        <activity android:name=".activities.customer.UploadProductActivity" />
         <activity android:name=".activities.ChangePassword" />
         <activity android:name=".activities.panditji.PanditProfileActivity" />
         <activity android:name=".activities.panditji.MyBookingActivity" />

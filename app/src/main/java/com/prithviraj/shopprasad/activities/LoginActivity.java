@@ -34,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView noAccount;
     Button signIn;
 
-    EditText email,password;
+    EditText email, password;
 
 
     @Override
@@ -72,13 +72,12 @@ public class LoginActivity extends AppCompatActivity {
         password = findViewById(R.id.editTextTextPersonName);
 
 
-
     }
 
     public void loginApi() {
 
 
-        if (email.getText().toString().trim().equals("") || email.getText().toString().trim().length()<10 ) {
+        if (email.getText().toString().trim().equals("") || email.getText().toString().trim().length() < 10) {
 
             new ErrorDialog("Please fill up the phone number to continue.", LoginActivity.this).showDialog();
         } else {
@@ -103,12 +102,12 @@ public class LoginActivity extends AppCompatActivity {
                     try {
                         JSONObject jsonObject = new JSONObject(s);
 
-                        if(jsonObject.getBoolean("success")){
+                        if (jsonObject.getBoolean("success")) {
 
                             Intent in = new Intent(LoginActivity.this, OtpActivity.class);
-                            in.putExtra("userId",jsonObject.getJSONObject("data").getInt("id"));
+                            in.putExtra("userId", jsonObject.getJSONObject("data").getInt("id"));
                             startActivity(in);
-                        }else {
+                        } else {
 
                             new ErrorDialog(jsonObject.getString("msg"), LoginActivity.this).showDialog();
                         }

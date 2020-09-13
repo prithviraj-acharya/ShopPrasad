@@ -39,11 +39,11 @@ import java.util.Map;
 public class UploadProductActivity extends AppCompatActivity {
 
     SharedPreference sharedPreference;
-    ImageView backIcon,addIcon,userPhoto;
+    ImageView backIcon, addIcon, userPhoto;
     GligarPicker imagePicker;
     Button uploadOrder;
 
-    byte profileImageArray[]=null;
+    byte profileImageArray[] = null;
     long length;
     String path1 = "";
 
@@ -56,7 +56,7 @@ public class UploadProductActivity extends AppCompatActivity {
         onClickListeners();
     }
 
-    void init(){
+    void init() {
 
         backIcon = findViewById(R.id.imageView);
         addIcon = findViewById(R.id.add_icon);
@@ -69,7 +69,7 @@ public class UploadProductActivity extends AppCompatActivity {
         imagePicker.withActivity(UploadProductActivity.this);
     }
 
-    void onClickListeners(){
+    void onClickListeners() {
         backIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -145,7 +145,7 @@ public class UploadProductActivity extends AppCompatActivity {
 
         profileImageArray = stream2.toByteArray();
 
-        Log.d("zxcv", "getByteArray: "+profileImageArray);
+        Log.d("zxcv", "getByteArray: " + profileImageArray);
 
 
     }
@@ -154,11 +154,11 @@ public class UploadProductActivity extends AppCompatActivity {
 
 
         Map<String, String> header = new HashMap<>();
-        header.put("Authorization", "Bearer "+sharedPreference.getUserToken());
+        header.put("Authorization", "Bearer " + sharedPreference.getUserToken());
 
         Map<String, DataPart> part = new HashMap<>();
 
-        if(profileImageArray!=null)
+        if (profileImageArray != null)
             part.put("image", new DataPart("image", profileImageArray));
 
 
@@ -186,7 +186,6 @@ public class UploadProductActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
 
 
             }
