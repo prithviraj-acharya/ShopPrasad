@@ -1,5 +1,6 @@
 package com.prithviraj.shopprasad.utils;
 
+import com.prithviraj.shopprasad.dataModelClasses.AddressDataModel;
 import com.prithviraj.shopprasad.dataModelClasses.CartDataModel;
 import com.prithviraj.shopprasad.dataModelClasses.PoojaDataModel;
 
@@ -12,5 +13,6 @@ public class GlobalListClass {
     public ArrayList<PoojaDataModel> poojaaSamagriList = new ArrayList<>();
     public ArrayList<PoojaDataModel> panditList = new ArrayList<>();
     public ArrayList<CartDataModel> cartList = new ArrayList<>();
+    public ArrayList<AddressDataModel> addressList = new ArrayList<>();
 
 }

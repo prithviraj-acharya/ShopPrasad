@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.customer.MyAddressActivity"></activity>
+        <activity android:name=".activities.customer.AddNewAddresses"></activity>
+        <activity android:name=".activities.customer.MyAddressActivity" />
         <activity android:name=".activities.customer.ProductDetails" />
         <activity android:name=".activities.customer.PoojaSamagriActivity" />
         <activity android:name=".activities.customer.AstrologyActivity" />

@@ -99,6 +99,13 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
 
+        profile_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                imagePicker.show();
+            }
+        });
+
         add_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

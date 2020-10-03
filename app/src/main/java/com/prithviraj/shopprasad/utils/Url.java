@@ -22,9 +22,15 @@ public class Url {
     public static final String UPLOAD_ORDER = BASE_URL + "upload/order";
     public static final String ASTROLOGY_STORE = BASE_URL + "astrology/store";
     public static final String PROFILE = BASE_URL + "customer/profile";
-   public static final String PROFILE_UPDATE = BASE_URL + "customer/profile/update";
+    public static final String PROFILE_UPDATE = BASE_URL + "customer/profile/update";
     public static final String PROFILE_IMAGE_UPDATE = BASE_URL + "customer/profile/image";
     public static final String PRODUCT_DETAILS = BASE_URL + "product/";
+    public static final String STATES = BASE_URL + "customer/states";
+    public static final String MY_ADDRESS_LIST = BASE_URL + "customer/address/list";
+    public static final String ADD_NEW_ADDRESS = BASE_URL + "customer/address/store";
+    public static final String UPDATE_ADDRESS = BASE_URL + "customer/address/update";
+    public static final String REMOVE_ADDRESS = BASE_URL + "customer/address/";
+
 
     //Customer Cart
     public static final String ADD_TO_CART = BASE_URL + "cart/store";

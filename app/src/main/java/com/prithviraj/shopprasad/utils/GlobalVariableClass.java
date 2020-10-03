@@ -3,6 +3,7 @@ package com.prithviraj.shopprasad.utils;
 
 import com.prithviraj.shopprasad.interfaces.AddToCartPoojaSamagriList;
 import com.prithviraj.shopprasad.interfaces.AddToCartProductList;
+import com.prithviraj.shopprasad.interfaces.AddressButtonInterfaces;
 import com.prithviraj.shopprasad.interfaces.ClickPoojaSamagriList;
 import com.prithviraj.shopprasad.interfaces.ClickProductList;
 import com.prithviraj.shopprasad.interfaces.DecreaseItemQuantityFromCart;
@@ -15,4 +16,5 @@ public class GlobalVariableClass {
     public AddToCartPoojaSamagriList addToCartPoojaSamagriList;
     public IncreaseItemQuantityFromCart increaseItemQuantityFromCart;
     public DecreaseItemQuantityFromCart decreaseItemQuantityFromCart;
+    public AddressButtonInterfaces addressButtonInterfaces;
 }
