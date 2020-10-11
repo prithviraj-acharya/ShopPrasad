@@ -52,7 +52,7 @@ import java.util.Map;
 public class CustomerDashboard extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     ConstraintLayout pooja, pandit, product, uploadOrder, astrology, poojaSamagriList;
-    ImageView cart, hamburgerMenu;
+    ImageView cart, hamburgerMenu, orderHistory;
     SharedPreference sharedPreference;
 
     DrawerLayout drawerLayout;
@@ -90,6 +90,7 @@ public class CustomerDashboard extends AppCompatActivity implements NavigationVi
         astrology = findViewById(R.id.constraintLayout51);
         poojaSamagriList = findViewById(R.id.constraintLayout41);
 
+
         navigationView = findViewById(R.id.nav_view);
         drawerLayout = findViewById(R.id.drawer_layout);
 
@@ -99,6 +100,7 @@ public class CustomerDashboard extends AppCompatActivity implements NavigationVi
 
         hamburgerMenu = findViewById(R.id.imageView);
         cart = findViewById(R.id.cart);
+        orderHistory = findViewById(R.id.orderHistory);
 
         addToCartDot = findViewById(R.id.addToCartDot);
         itemNumber = findViewById(R.id.itemNumber);
@@ -177,6 +179,13 @@ public class CustomerDashboard extends AppCompatActivity implements NavigationVi
             }
         });
 
+        orderHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(CustomerDashboard.this, OrderHistoryActivity.class);
+                startActivity(in);
+            }
+        });
 
     }
 
@@ -211,6 +220,7 @@ public class CustomerDashboard extends AppCompatActivity implements NavigationVi
             startActivity(in);
         } else if (id == R.id.nav_address) {
             Intent in = new Intent(CustomerDashboard.this, MyAddressActivity.class);
+            in.putExtra("isSelectAddress",true);
             startActivity(in);
         } else if (id == R.id.nav_logout) {
             Intent in = new Intent(CustomerDashboard.this, LoginActivity.class);

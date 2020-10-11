@@ -12,7 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.customer.AddNewAddresses"></activity>
+        <activity android:name=".activities.customer.OrderHistoryDetailsActivity"></activity>
+        <activity android:name=".activities.customer.OrderHistoryActivity" />
+        <activity android:name=".activities.customer.OrderCompleteActivity" />
+        <activity android:name=".activities.customer.CheckoutActivity" />
+        <activity android:name=".activities.customer.AddNewAddresses" />
         <activity android:name=".activities.customer.MyAddressActivity" />
         <activity android:name=".activities.customer.ProductDetails" />
         <activity android:name=".activities.customer.PoojaSamagriActivity" />

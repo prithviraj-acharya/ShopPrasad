@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -45,10 +46,14 @@ public class CartActivity extends AppCompatActivity {
 
     String totalItems;
 
+    public static Activity cartActivity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+
+        cartActivity = this;
 
         init();
         onClickListeners();
@@ -137,9 +142,9 @@ public class CartActivity extends AppCompatActivity {
         checkoutConst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent in = new Intent(CartActivity.this, CheckoutActivity.class);
-//                in.putExtra("totalItems",totalItems);
-//                startActivity(in);
+                Intent in = new Intent(CartActivity.this, CheckoutActivity.class);
+                in.putExtra("totalItems",totalItems);
+                startActivity(in);
             }
         });
     }

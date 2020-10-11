@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -48,11 +49,18 @@ public class MyAddressActivity extends AppCompatActivity {
     AddressListAdapter addressListAdapter;
     TextView noAddressAdded;
 
+    boolean isSelectAddress;
+
+    public static Activity myAddressActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_address);
+
+        myAddressActivity = this;
+
+        isSelectAddress = getIntent().getBooleanExtra("isSelectAddress",false);
 
         init();
         onClickListeners();
@@ -90,7 +98,7 @@ public class MyAddressActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(MyAddressActivity.this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        addressListAdapter = new AddressListAdapter();
+        addressListAdapter = new AddressListAdapter(isSelectAddress);
         recyclerView.setAdapter(addressListAdapter);
 
         noAddressAdded = findViewById(R.id.noAddressAdded);

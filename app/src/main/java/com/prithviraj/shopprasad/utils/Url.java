@@ -30,6 +30,8 @@ public class Url {
     public static final String ADD_NEW_ADDRESS = BASE_URL + "customer/address/store";
     public static final String UPDATE_ADDRESS = BASE_URL + "customer/address/update";
     public static final String REMOVE_ADDRESS = BASE_URL + "customer/address/";
+    public static final String ORDER_STORE = BASE_URL + "customer/order/store";
+    public static final String MY_ORDERS = BASE_URL + "customer/orders";
 
 
     //Customer Cart
@@ -38,5 +40,9 @@ public class Url {
     public static final String REMOVE_ITEMS_FROM_CART = BASE_URL + "cart/";
     public static final String UPDATE_ITEMS_TO_CART = BASE_URL + "cart/update";
 
+    //Pandit Section
+    public static final String PANDIT_PROFILE_UPDATE = BASE_URL + "pandit/profile/update";
+    public static final String PANDIT_PROFILE = BASE_URL + "pandit/profile";
+    public static final String PANDIT_PROFILE_IMAGE_UPDATE = BASE_URL + "pandit/profile/image";
 
 }

@@ -20,6 +20,11 @@ import com.squareup.picasso.Picasso;
 
 public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.AddressViewHolder> {
 
+    boolean isSelectAddress;
+
+    public AddressListAdapter(boolean isSelectAddress) {
+        this.isSelectAddress = isSelectAddress;
+    }
 
     @NonNull
     @Override
@@ -38,6 +43,16 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
 
         holder.customerPhoneNumber.setText(String.format("Phone number: %s", addressDataModel.getPhone()));
 
+        if(isSelectAddress){
+            holder.editButton.setVisibility(View.GONE);
+            holder.deleteButton.setVisibility(View.GONE);
+            holder.selectButton.setVisibility(View.VISIBLE);
+        }else {
+            holder.editButton.setVisibility(View.VISIBLE);
+            holder.deleteButton.setVisibility(View.VISIBLE);
+            holder.selectButton.setVisibility(View.GONE);
+        }
+
         holder.editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,6 +66,13 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
                 CommonClass.GLOBAL_VARIABLE_CLASS.addressButtonInterfaces.passPosition(position,true);
             }
         });
+
+        holder.selectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CommonClass.GLOBAL_VARIABLE_CLASS.selectAddressButtonInterfaces.passPosition(position);
+            }
+        });
     }
 
     @Override
@@ -62,7 +84,7 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
     static class AddressViewHolder extends RecyclerView.ViewHolder {
 
         private TextView customerName, customerAddress, customerAddressDetails, customerPhoneNumber;
-        private Button editButton,deleteButton;
+        private Button editButton,deleteButton, selectButton;
 
 
         public AddressViewHolder(@NonNull View itemView) {
@@ -73,9 +95,8 @@ public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.
             customerPhoneNumber = itemView.findViewById(R.id.customerPhoneNumber);
 
             editButton = itemView.findViewById(R.id.editButton);
-
+            selectButton = itemView.findViewById(R.id.editButton2);
             deleteButton = itemView.findViewById(R.id.deleteButton);
-
 
         }
     }
