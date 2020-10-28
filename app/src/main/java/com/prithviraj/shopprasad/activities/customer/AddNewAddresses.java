@@ -1,8 +1,10 @@
 package com.prithviraj.shopprasad.activities.customer;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
@@ -175,8 +177,22 @@ public class AddNewAddresses extends AppCompatActivity implements  AdapterView.O
                         JSONObject jsonObject = new JSONObject(s);
 
                         if (jsonObject.getBoolean("success")) {
-                            new ErrorDialog(jsonObject.getString("message"), AddNewAddresses.this).showDialog();
 
+                            AlertDialog.Builder builder1 = new AlertDialog.Builder(AddNewAddresses.this);
+                            builder1.setMessage(jsonObject.getString("message"));
+                            builder1.setCancelable(true);
+
+                            builder1.setPositiveButton(
+                                    "Yes",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                            finish();
+                                        }
+                                    });
+
+                            AlertDialog alert11 = builder1.create();
+                            alert11.show();
 
                         } else {
 

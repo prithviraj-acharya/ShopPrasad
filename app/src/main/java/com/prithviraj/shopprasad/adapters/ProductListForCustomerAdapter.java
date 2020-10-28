@@ -30,7 +30,7 @@ public class ProductListForCustomerAdapter extends RecyclerView.Adapter<ProductL
 
         holder.productName.setText(CommonClass.GLOBAL_LIST_CLASS.productList.get(position).getPujaName());
 
-        if (CommonClass.GLOBAL_LIST_CLASS.productList.get(position).getPercentageOff().equalsIgnoreCase("null")) {
+        if (CommonClass.GLOBAL_LIST_CLASS.productList.get(position).getPercentageOff().equalsIgnoreCase("null")|| CommonClass.GLOBAL_LIST_CLASS.productList.get(position).getPercentageOff().equalsIgnoreCase("0")) {
             holder.offerPrice.setVisibility(View.INVISIBLE);
             holder.percentageOff.setVisibility(View.INVISIBLE);
             holder.productPrice.setText(String.format("₹ %s", CommonClass.GLOBAL_LIST_CLASS.productList.get(position).getPujaPrice()));

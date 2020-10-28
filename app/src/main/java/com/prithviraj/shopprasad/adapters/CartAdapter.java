@@ -1,5 +1,7 @@
 package com.prithviraj.shopprasad.adapters;
 
+import android.os.Build;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +39,14 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ProductViewHol
 
         holder.productQuantity.setText(String.format("x%d", CommonClass.GLOBAL_LIST_CLASS.cartList.get(position).getQuantity()));
 
-        holder.productDesc.setText(String.valueOf(CommonClass.GLOBAL_LIST_CLASS.cartList.get(position).getProductDesc().replaceAll("\\<.*?\\>", "")));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            holder.productDesc.setText(Html.fromHtml(CommonClass.GLOBAL_LIST_CLASS.cartList.get(position).getProductDesc(), Html.FROM_HTML_MODE_COMPACT));
+        } else {
+            holder.productDesc.setText(Html.fromHtml(CommonClass.GLOBAL_LIST_CLASS.cartList.get(position).getProductDesc()));
+        }
+
+       // holder.productDesc.setText(String.valueOf(CommonClass.GLOBAL_LIST_CLASS.cartList.get(position).getProductDesc().replaceAll("\\<.*?\\>", "")));
 
         if(CommonClass.GLOBAL_LIST_CLASS.cartList.get(position).getDiscount()>0){
 

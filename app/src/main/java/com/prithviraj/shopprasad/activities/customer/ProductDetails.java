@@ -6,7 +6,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Paint;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -34,9 +36,11 @@ import java.util.Map;
 public class ProductDetails extends AppCompatActivity {
 
     SharedPreference sharedPreference;
+    JSONObject productObject;
 
     ImageView productImage, backIcon;
-    TextView productName, productDesc, originalPrice, discountPrice;
+    TextView productName, productDesc, originalPrice, discountPrice, showMoreText;
+    boolean showMoreBoolean = false;
 
     ConstraintLayout addItem, removeItem;
     TextView productQuantity;
@@ -70,6 +74,7 @@ public class ProductDetails extends AppCompatActivity {
         productDesc = findViewById(R.id.productDesc);
         originalPrice = findViewById(R.id.originalPrice);
         discountPrice = findViewById(R.id.discountPrice);
+        showMoreText = findViewById(R.id.textView6);
 
         addItem = findViewById(R.id.addItem);
         removeItem = findViewById(R.id.removeItem);
@@ -127,6 +132,37 @@ public class ProductDetails extends AppCompatActivity {
                 startActivity(in);
             }
         });
+
+        showMoreText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!showMoreBoolean){
+                    showMoreBoolean = true;
+                    showMoreText.setText("Show less");
+                    try {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            productDesc.setText(Html.fromHtml(productObject.getString("description"), Html.FROM_HTML_MODE_COMPACT));
+                        } else {
+                            productDesc.setText(Html.fromHtml(productObject.getString("description")));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }else {
+                    showMoreBoolean = false;
+                    showMoreText.setText("Show more");
+                    try {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        productDesc.setText(Html.fromHtml(productObject.getString("description").substring(0, 200) + "...", Html.FROM_HTML_MODE_COMPACT));
+                    } else {
+                        productDesc.setText(Html.fromHtml(productObject.getString("description").substring(0, 200) + "..."));
+                    } } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        });
     }
 
     @Override
@@ -155,10 +191,26 @@ public class ProductDetails extends AppCompatActivity {
                 Log.d("zxcv", s);
 
                 try {
-                    JSONObject productObject = new JSONObject(s).getJSONObject("data");
+                    productObject = new JSONObject(s).getJSONObject("data");
 
                     productName.setText(productObject.getString("name"));
-                    productDesc.setText(productObject.getString("description").replaceAll("\\<.*?\\>", ""));
+
+                    if (productObject.getString("description").length() > 200) {
+                        showMoreText.setVisibility(View.VISIBLE);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            productDesc.setText(Html.fromHtml(productObject.getString("description").substring(0, 200) + "...", Html.FROM_HTML_MODE_COMPACT));
+                        } else {
+                            productDesc.setText(Html.fromHtml(productObject.getString("description").substring(0, 200) + "..."));
+                        }
+                    } else {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            productDesc.setText(Html.fromHtml(productObject.getString("description"), Html.FROM_HTML_MODE_COMPACT));
+                        } else {
+                            productDesc.setText(Html.fromHtml(productObject.getString("description")));
+                        }
+                    }
+
+                    //  productDesc.setText(productObject.getString("description").replaceAll("\\<.*?\\>", ""));
 
                     if (!productObject.getString("image").equalsIgnoreCase("null"))
                         Picasso.get()

@@ -137,19 +137,19 @@
                 android:id="@+id/discountPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:text=""
                 android:textColor="@color/theme_yellow"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/productDesc"
-                app:layout_constraintTop_toBottomOf="@+id/productDesc" />
+                app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
             <TextView
                 android:id="@+id/originalPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:text=""
                 android:textColor="@color/black"
                 android:textSize="18sp"
@@ -241,6 +241,15 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Show more"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="@+id/productDesc"
+                app:layout_constraintTop_toBottomOf="@+id/productDesc" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

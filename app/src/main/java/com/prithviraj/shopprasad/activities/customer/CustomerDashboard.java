@@ -120,6 +120,7 @@ public class CustomerDashboard extends AppCompatActivity implements NavigationVi
             @Override
             public void onClick(View view) {
                 Intent in = new Intent(CustomerDashboard.this, PoojaActivity.class);
+                in.putExtra("isPuja", true);
                 startActivity(in);
             }
         });
@@ -127,7 +128,8 @@ public class CustomerDashboard extends AppCompatActivity implements NavigationVi
         pandit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent in = new Intent(CustomerDashboard.this, PanditActivity.class);
+                Intent in = new Intent(CustomerDashboard.this, PoojaActivity.class);
+                in.putExtra("isPuja", false);
                 startActivity(in);
             }
         });
@@ -220,7 +222,7 @@ public class CustomerDashboard extends AppCompatActivity implements NavigationVi
             startActivity(in);
         } else if (id == R.id.nav_address) {
             Intent in = new Intent(CustomerDashboard.this, MyAddressActivity.class);
-            in.putExtra("isSelectAddress",true);
+            in.putExtra("isSelectAddress",false);
             startActivity(in);
         } else if (id == R.id.nav_logout) {
             Intent in = new Intent(CustomerDashboard.this, LoginActivity.class);

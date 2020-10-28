@@ -29,7 +29,7 @@ public class ProductSamagriListForCustomerAdapter extends RecyclerView.Adapter<P
 
         holder.productName.setText(CommonClass.GLOBAL_LIST_CLASS.poojaaSamagriList.get(position).getPujaName());
 
-        if(CommonClass.GLOBAL_LIST_CLASS.poojaaSamagriList.get(position).getPercentageOff().equalsIgnoreCase("null")){
+        if(CommonClass.GLOBAL_LIST_CLASS.poojaaSamagriList.get(position).getPercentageOff().equalsIgnoreCase("null") || CommonClass.GLOBAL_LIST_CLASS.poojaaSamagriList.get(position).getPercentageOff().equalsIgnoreCase("0")){
             holder.offerPrice.setVisibility(View.INVISIBLE);
             holder.percentageOff.setVisibility(View.INVISIBLE);
             holder.productPrice.setText(String.format("₹ %s", CommonClass.GLOBAL_LIST_CLASS.poojaaSamagriList.get(position).getPujaPrice()));

@@ -32,6 +32,9 @@ public class Url {
     public static final String REMOVE_ADDRESS = BASE_URL + "customer/address/";
     public static final String ORDER_STORE = BASE_URL + "customer/order/store";
     public static final String MY_ORDERS = BASE_URL + "customer/orders";
+    public static final String BOOK_POOJA = BASE_URL + "customer/puja/store";
+    public static final String BOOK_PANDIT = BASE_URL + "customer/pandit/store";
+
 
 
     //Customer Cart

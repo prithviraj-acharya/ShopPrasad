@@ -28,10 +28,17 @@ public class PoojaListForCustomerAdapter extends RecyclerView.Adapter<PoojaListF
 
         holder.poojaName.setText(CommonClass.GLOBAL_LIST_CLASS.poojaList.get(position).getPujaName());
 
-            if(!CommonClass.GLOBAL_LIST_CLASS.poojaList.get(position).getPujaImage().equalsIgnoreCase("null"))
-            Picasso.get()
-                    .load(CommonClass.GLOBAL_LIST_CLASS.poojaList.get(position).getPujaImage())
-                    .into(holder.poojaImage);
+        if(!CommonClass.GLOBAL_LIST_CLASS.poojaList.get(position).getPujaImage().equalsIgnoreCase("null"))
+        Picasso.get()
+                .load(CommonClass.GLOBAL_LIST_CLASS.poojaList.get(position).getPujaImage())
+                .into(holder.poojaImage);
+
+        holder.poojaCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CommonClass.GLOBAL_VARIABLE_CLASS.clickPoojaList.passPoojaProduct(position);
+            }
+        });
 
 
     }

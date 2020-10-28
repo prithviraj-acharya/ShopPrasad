@@ -5,6 +5,7 @@ import com.prithviraj.shopprasad.interfaces.AddPanditProfilePujaInterfaces;
 import com.prithviraj.shopprasad.interfaces.AddToCartPoojaSamagriList;
 import com.prithviraj.shopprasad.interfaces.AddToCartProductList;
 import com.prithviraj.shopprasad.interfaces.AddressButtonInterfaces;
+import com.prithviraj.shopprasad.interfaces.ClickPoojaList;
 import com.prithviraj.shopprasad.interfaces.ClickPoojaSamagriList;
 import com.prithviraj.shopprasad.interfaces.ClickProductList;
 import com.prithviraj.shopprasad.interfaces.DecreaseItemQuantityFromCart;
@@ -23,4 +24,5 @@ public class GlobalVariableClass {
     public AddPanditProfilePujaInterfaces addPanditProfilePujaInterfaces;
     public SelectAddressButtonInterfaces selectAddressButtonInterfaces;
     public OrderHistoryClickInterface orderHistoryClickInterface;
+    public ClickPoojaList clickPoojaList;
 }
