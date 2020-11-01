@@ -56,7 +56,7 @@ public class CheckoutActivity extends AppCompatActivity {
     //TextView userName, userNumber, userAddress, userPinCode;
     int addressId=-1;
 
-    Button placeOrderButton;
+    Button placeOrderButton, addNew;
     ImageView backIcon;
 
     String GOOGLE_PAY_PACKAGE_NAME = "com.google.android.apps.nbu.paisa.user";
@@ -67,6 +67,8 @@ public class CheckoutActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     AddressListAdapterForCheckout addressListAdapterForCheckout;
 
+    int positionOfAddress = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +76,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
         init();
         onClickListeners();
-        getAddresses(0);
+        getAddresses(positionOfAddress);
 
 
 
@@ -83,8 +85,8 @@ public class CheckoutActivity extends AppCompatActivity {
             public void addressPosition(int position) {
 
                 addressId = CommonClass.GLOBAL_LIST_CLASS.addressList.get(position).getAddressId();
-
-                getAddresses(position);
+                positionOfAddress = position;
+                getAddresses(positionOfAddress);
 
             }
         };
@@ -98,6 +100,7 @@ public class CheckoutActivity extends AppCompatActivity {
         totalItems.setText(getIntent().getStringExtra("totalItems"));
 
         backIcon = findViewById(R.id.backIcon);
+        addNew = findViewById(R.id.button6);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(CheckoutActivity.this, RecyclerView.HORIZONTAL, false));
@@ -171,6 +174,21 @@ public class CheckoutActivity extends AppCompatActivity {
 //                startActivity(intent);
 //            }
 //        });
+
+        addNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CheckoutActivity.this,MyAddressActivity.class);
+                intent.putExtra("isSelectAddress",false);
+                startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        getAddresses(positionOfAddress);
     }
 
     public void getAddresses(final int position) {
@@ -196,6 +214,13 @@ public class CheckoutActivity extends AppCompatActivity {
                 try {
                     JSONArray array = new JSONObject(s).getJSONArray("data");
 
+                    if(array.length()<1){
+                        addNew.setVisibility(View.VISIBLE);
+                        recyclerView.setVisibility(View.INVISIBLE);
+                    }else {
+                        addNew.setVisibility(View.INVISIBLE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                    }
 
                     for(int i = 0;i<array.length();i++){
                         JSONObject jsonObject = array.getJSONObject(i);
@@ -234,7 +259,7 @@ public class CheckoutActivity extends AppCompatActivity {
                     @Override
                     public void setAction(boolean action) {
                         if (action)
-                            getAddresses(position);
+                            getAddresses(positionOfAddress);
                     }
                 };
                 apiErrorAction.createDialog();
