@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.prithviraj.myvollyimplementation.VolleyServiceCall;
 import com.prithviraj.shopprasad.R;
 import com.prithviraj.shopprasad.adapters.PoojaListForCustomerAdapter;
 import com.prithviraj.shopprasad.dataModelClasses.PoojaDataModel;
+import com.prithviraj.shopprasad.interfaces.ClickForProductDetails;
 import com.prithviraj.shopprasad.interfaces.ClickPoojaList;
 import com.prithviraj.shopprasad.utils.CommonClass;
 import com.prithviraj.shopprasad.utils.ErrorDialog;
@@ -100,6 +102,18 @@ public class PoojaActivity extends AppCompatActivity {
             }
         };
 
+        CommonClass.GLOBAL_VARIABLE_CLASS.clickForProductDetails = new ClickForProductDetails() {
+            @Override
+            public void passPoojaPosition(int position) {
+
+                Intent in = new Intent(PoojaActivity.this, PoojaDetailsActivity.class);
+                in.putExtra("position", position);
+                in.putExtra("isPuja",  getIntent().getBooleanExtra("isPuja",true));
+
+                startActivity(in);
+            }
+        };
+
     }
 
     void init() {
@@ -152,6 +166,7 @@ public class PoojaActivity extends AppCompatActivity {
                         poojaDataModel.setPujaName(pujaArray.getJSONObject(i).getString("name"));
                         poojaDataModel.setPujaPrice(pujaArray.getJSONObject(i).getString("price"));
                         poojaDataModel.setPujaImage(pujaArray.getJSONObject(i).getString("image"));
+                        poojaDataModel.setPujaDesc(pujaArray.getJSONObject(i).getString("description"));
                         poojaDataModel.setId(pujaArray.getJSONObject(i).getInt("id"));
 
                         CommonClass.GLOBAL_LIST_CLASS.poojaList.add(poojaDataModel);

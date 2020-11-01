@@ -32,11 +32,19 @@ public class PoojaListForCustomerAdapter extends RecyclerView.Adapter<PoojaListF
         Picasso.get()
                 .load(CommonClass.GLOBAL_LIST_CLASS.poojaList.get(position).getPujaImage())
                 .into(holder.poojaImage);
+        holder.poojaPrice.setText(String.format("₹ %s", CommonClass.GLOBAL_LIST_CLASS.poojaList.get(position).getPujaPrice()));
+
+        holder.bookPooja.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CommonClass.GLOBAL_VARIABLE_CLASS.clickPoojaList.passPoojaProduct(position);
+            }
+        });
 
         holder.poojaCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CommonClass.GLOBAL_VARIABLE_CLASS.clickPoojaList.passPoojaProduct(position);
+                CommonClass.GLOBAL_VARIABLE_CLASS.clickForProductDetails.passPoojaPosition(position);
             }
         });
 
@@ -50,9 +58,10 @@ public class PoojaListForCustomerAdapter extends RecyclerView.Adapter<PoojaListF
 
     static class PoojaListViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView poojaName;
+        private TextView poojaName, poojaPrice, bookPooja;
         private ImageView poojaImage;
         private CardView poojaCard;
+
 
 
         public PoojaListViewHolder(@NonNull View itemView) {
@@ -61,6 +70,8 @@ public class PoojaListForCustomerAdapter extends RecyclerView.Adapter<PoojaListF
             poojaName = itemView.findViewById(R.id.poojaName);
             poojaImage = itemView.findViewById(R.id.poojaImage);
             poojaCard = itemView.findViewById(R.id.poojaCard);
+            bookPooja = itemView.findViewById(R.id.textView9);
+            poojaPrice = itemView.findViewById(R.id.productPrice3);
         }
     }
 }

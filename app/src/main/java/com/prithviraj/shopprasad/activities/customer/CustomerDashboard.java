@@ -7,6 +7,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -32,7 +36,14 @@ import com.prithviraj.myvollyimplementation.UtilityClasses.ApiErrorAction;
 import com.prithviraj.myvollyimplementation.VolleyServiceCall;
 import com.prithviraj.shopprasad.R;
 import com.prithviraj.shopprasad.activities.LoginActivity;
+import com.prithviraj.shopprasad.adapters.FeaturedProductListForCustomerAdapter;
+import com.prithviraj.shopprasad.adapters.ProductListForCustomerAdapter;
 import com.prithviraj.shopprasad.dataModelClasses.CartDataModel;
+import com.prithviraj.shopprasad.dataModelClasses.PoojaDataModel;
+import com.prithviraj.shopprasad.interfaces.AddToCartFeaturedProductList;
+import com.prithviraj.shopprasad.interfaces.AddToCartProductList;
+import com.prithviraj.shopprasad.interfaces.ClickFeaturedProductList;
+import com.prithviraj.shopprasad.interfaces.ClickProductList;
 import com.prithviraj.shopprasad.utils.CircleTransform;
 import com.prithviraj.shopprasad.utils.CommonClass;
 import com.prithviraj.shopprasad.utils.ErrorDialog;
@@ -71,6 +82,10 @@ public class CustomerDashboard extends AppCompatActivity implements NavigationVi
     TextView itemNumber;
 
 
+    RecyclerView recyclerView;
+    FeaturedProductListForCustomerAdapter featuredProductListForCustomerAdapter;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +95,24 @@ public class CustomerDashboard extends AppCompatActivity implements NavigationVi
         onClickListeners();
         getProfile();
         GetCart();
+        getProductApi();
+
+        CommonClass.GLOBAL_VARIABLE_CLASS.clickFeaturedProductList = new ClickFeaturedProductList() {
+            @Override
+            public void passProductId(int productId) {
+                Intent intent = new Intent(CustomerDashboard.this,ProductDetails.class);
+                intent.putExtra("productId",productId);
+                startActivity(intent);
+            }
+        };
+
+        CommonClass.GLOBAL_VARIABLE_CLASS.addToCartFeaturedProductList = new AddToCartFeaturedProductList() {
+            @Override
+            public void passPosition(int position) {
+                PoojaDataModel poojaDataModel = CommonClass.GLOBAL_LIST_CLASS.featuredProductList.get(position);
+                addToCart(poojaDataModel.getId(),getQuantity(poojaDataModel.getId())+1);
+            }
+        };
     }
 
     void init() {
@@ -112,6 +145,14 @@ public class CustomerDashboard extends AppCompatActivity implements NavigationVi
         imagePicker.withActivity(CustomerDashboard.this);
 
         sharedPreference = new SharedPreference(CustomerDashboard.this);
+
+        recyclerView = findViewById(R.id.recyclerView);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(CustomerDashboard.this, RecyclerView.HORIZONTAL, false));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        featuredProductListForCustomerAdapter = new FeaturedProductListForCustomerAdapter();
+        recyclerView.setAdapter(featuredProductListForCustomerAdapter);
     }
 
     void onClickListeners() {
@@ -218,7 +259,7 @@ public class CustomerDashboard extends AppCompatActivity implements NavigationVi
             Intent in = new Intent(CustomerDashboard.this, MyProfileActivity.class);
             startActivity(in);
         } else if (id == R.id.nav_orders) {
-            Intent in = new Intent(CustomerDashboard.this, MyOrdersActivity.class);
+            Intent in = new Intent(CustomerDashboard.this, OrderHistoryActivity.class);
             startActivity(in);
         } else if (id == R.id.nav_address) {
             Intent in = new Intent(CustomerDashboard.this, MyAddressActivity.class);
@@ -227,6 +268,7 @@ public class CustomerDashboard extends AppCompatActivity implements NavigationVi
         } else if (id == R.id.nav_logout) {
             Intent in = new Intent(CustomerDashboard.this, LoginActivity.class);
             startActivity(in);
+            sharedPreference.setUserToken("");
             finish();
         }
 
@@ -464,5 +506,186 @@ public class CustomerDashboard extends AppCompatActivity implements NavigationVi
             }
         }.start();
 
+    }
+
+    public void getProductApi() {
+
+        CommonClass.GLOBAL_LIST_CLASS.featuredProductList.clear();
+
+        final ProgressDialog dialog = ProgressDialog.show(CustomerDashboard.this, "",
+                "Loading. Please wait...", true);
+
+        Map<String, String> header = new HashMap<>();
+        header.put("Authorization", "Bearer "+sharedPreference.getUserToken());
+
+        new VolleyServiceCall(Request.Method.GET, Url.PRODUCT_LIST, header, null, null, CustomerDashboard.this) {
+            @Override
+            public void onResponse(String s) {
+                dialog.cancel();
+
+                Log.d("zxcv", s);
+
+                try {
+                    JSONArray pujaArray = new JSONObject(s).getJSONArray("data");
+
+                    for(int i = 0;i<pujaArray.length();i++){
+
+                        PoojaDataModel poojaDataModel = new PoojaDataModel();
+
+                        if(!pujaArray.getJSONObject(i).getString("is_featured").equalsIgnoreCase("No")){
+
+                            poojaDataModel.setPujaName(pujaArray.getJSONObject(i).getString("name"));
+                            poojaDataModel.setPujaPrice(pujaArray.getJSONObject(i).getString("price"));
+                            poojaDataModel.setPujaImage(pujaArray.getJSONObject(i).getString("image"));
+                            poojaDataModel.setPercentageOff(pujaArray.getJSONObject(i).getString("percentage_off"));
+                            poojaDataModel.setOfferPrice(pujaArray.getJSONObject(i).getString("offer_price"));
+
+                            poojaDataModel.setId(pujaArray.getJSONObject(i).getInt("id"));
+
+                            CommonClass.GLOBAL_LIST_CLASS.featuredProductList.add(poojaDataModel);
+                        }
+                    }
+
+                    featuredProductListForCustomerAdapter.notifyDataSetChanged();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onError(VolleyError error, String errorMessage) {
+                dialog.cancel();
+                Log.d("zxcv ", errorMessage);
+                ApiErrorAction apiErrorAction = new ApiErrorAction(error, errorMessage, CustomerDashboard.this) {
+                    @Override
+                    public void setAction(boolean action) {
+                        if (action)
+                            getProductApi();
+                    }
+                };
+                apiErrorAction.createDialog();
+            }
+        }.start();
+
+    }
+
+    public void addToCart(final int productId, final int quantity){
+
+
+        Log.d("zxcv", "addToCart: "+productId);
+        Map<String, String> header = new HashMap<>();
+        header.put("Authorization", "Bearer "+sharedPreference.getUserToken());
+
+        Map<String, String> param = new HashMap<>();
+        param.put("product_id",String.valueOf(productId));
+        param.put("quantity",String.valueOf(quantity));
+
+
+        new VolleyServiceCall(Request.Method.POST, Url.ADD_TO_CART, header, param, null, CustomerDashboard.this) {
+            @Override
+            public void onResponse(String s) {
+
+                Log.d("zxcv", s);
+                getCart();
+//
+            }
+
+            @Override
+            public void onError(VolleyError error, String errorMessage) {
+                //  dialog.cancel();
+                Log.d("zxcv ", errorMessage);
+                ApiErrorAction apiErrorAction = new ApiErrorAction(error, errorMessage, CustomerDashboard.this) {
+                    @Override
+                    public void setAction(boolean action) {
+                        if (action)
+                            addToCart(productId,quantity);
+                    }
+                };
+                apiErrorAction.createDialog();
+            }
+        }.start();
+
+    }
+
+    public void getCart() {
+
+        CommonClass.GLOBAL_LIST_CLASS.cartList.clear();
+
+        Map<String, String> header = new HashMap<>();
+        header.put("Authorization", "Bearer " + sharedPreference.getUserToken());
+
+        new VolleyServiceCall(Request.Method.GET, Url.MY_CART, header, null, null, CustomerDashboard.this) {
+            @Override
+            public void onResponse(String s) {
+
+                Log.d("zxcv", s);
+
+                try {
+                    JSONArray array = new JSONObject(s).getJSONArray("data");
+
+                    if (array.length() > 0) {
+                        addToCartDot.setVisibility(View.VISIBLE);
+                        itemNumber.setText(String.valueOf(array.length()));
+
+                        for (int i = 0; i < array.length(); i++) {
+                            JSONObject cartObject = array.getJSONObject(i);
+
+                            CartDataModel cartDataModel = new CartDataModel();
+
+                            cartDataModel.setCartItemId(cartObject.getInt("id"));
+                            cartDataModel.setUserId(cartObject.getInt("user_id"));
+                            cartDataModel.setProductId(cartObject.getInt("product_id"));
+                            cartDataModel.setQuantity(cartObject.getInt("quantity"));
+                            cartDataModel.setPrice(cartObject.getInt("price"));
+                            cartDataModel.setDiscount(cartObject.getString("offer_price").equalsIgnoreCase("null")?0:cartObject.getInt("offer_price"));
+                            cartDataModel.setProductName(cartObject.getString("name"));
+                            cartDataModel.setProductImage(cartObject.getString("image"));
+                            cartDataModel.setProductDesc(cartObject.getString("description"));
+
+                            CommonClass.GLOBAL_LIST_CLASS.cartList.add(cartDataModel);
+
+                        }
+
+
+                    } else {
+                        addToCartDot.setVisibility(View.GONE);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+
+            @Override
+            public void onError(VolleyError error, String errorMessage) {
+                Log.d("zxcv ", errorMessage);
+                ApiErrorAction apiErrorAction = new ApiErrorAction(error, errorMessage, CustomerDashboard.this) {
+                    @Override
+                    public void setAction(boolean action) {
+                        if (action)
+                            getCart();
+                    }
+                };
+                apiErrorAction.createDialog();
+            }
+        }.start();
+
+    }
+
+    int getQuantity(int productId){
+
+        for(int i = 0; i<CommonClass.GLOBAL_LIST_CLASS.cartList.size();i++){
+
+            CartDataModel cartDataModel = CommonClass.GLOBAL_LIST_CLASS.cartList.get(i);
+
+            if(productId==cartDataModel.getProductId()){
+                return cartDataModel.getQuantity();
+            }
+        }
+
+        return 0;
     }
 }

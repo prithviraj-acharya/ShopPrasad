@@ -1,5 +1,6 @@
 package com.prithviraj.shopprasad.activities.customer;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -68,9 +70,31 @@ public class MyAddressActivity extends AppCompatActivity {
 
         CommonClass.GLOBAL_VARIABLE_CLASS.addressButtonInterfaces = new AddressButtonInterfaces() {
             @Override
-            public void passPosition(int position, boolean isDelete) {
+            public void passPosition(final int position, boolean isDelete) {
                 if(isDelete){
-                    removeAddress(CommonClass.GLOBAL_LIST_CLASS.addressList.get(position).getAddressId());
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(MyAddressActivity.this);
+                    builder1.setMessage("Are you sure you want to delete this address?");
+                    builder1.setCancelable(true);
+
+                    builder1.setPositiveButton(
+                            "Yes",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    removeAddress(CommonClass.GLOBAL_LIST_CLASS.addressList.get(position).getAddressId());
+                                }
+                            });
+
+                    builder1.setNegativeButton(
+                            "No",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                    AlertDialog alert11 = builder1.create();
+                    alert11.show();
+
                 }else {
                     Intent in = new Intent(MyAddressActivity.this, AddNewAddresses.class);
                     in.putExtra("isEditing", true);
@@ -155,6 +179,8 @@ public class MyAddressActivity extends AppCompatActivity {
                         JSONObject jsonObject = array.getJSONObject(i);
 
                         AddressDataModel addressDataModel = new AddressDataModel();
+
+                        addressDataModel.setSelected(i == 0);
                         addressDataModel.setAddressId(jsonObject.getInt("id"));
                         addressDataModel.setFullName(jsonObject.getString("full_name"));
                         addressDataModel.setHouseNumber(jsonObject.getString("house_number"));

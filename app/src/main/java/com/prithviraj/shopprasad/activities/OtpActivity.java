@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -60,6 +62,26 @@ public class OtpActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 resendOtp();
+            }
+        });
+
+        otp.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                Log.d("zxcv", "afterTextChanged: "+editable.toString().length());
+                if(editable.toString().length() == 4){
+                    verifyOtp();
+                }
             }
         });
     }

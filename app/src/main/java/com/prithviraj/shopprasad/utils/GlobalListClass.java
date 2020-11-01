@@ -19,5 +19,6 @@ public class GlobalListClass {
     public ArrayList<PanditProfilePujaDataModel> panditPujaList = new ArrayList<>();
     public ArrayList<String> staticPujaList = new ArrayList<>();
     public ArrayList<OrderHitoryDataModel> orderHistoryList = new ArrayList<>();
+    public ArrayList<PoojaDataModel> featuredProductList = new ArrayList<>();
 
 }

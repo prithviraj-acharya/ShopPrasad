@@ -39,17 +39,6 @@
             app:layout_constraintStart_toEndOf="@+id/backIcon"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/cart"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginEnd="8dp"
-            android:elevation="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_baseline_shopping_cart_24" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/addToCartDot"
             android:layout_width="20dp"
@@ -57,11 +46,8 @@
             android:background="@drawable/add_to_cart_background"
             android:elevation="20dp"
             android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@+id/cart"
-            app:layout_constraintEnd_toEndOf="@+id/cart"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/cart"
-            app:layout_constraintTop_toTopOf="@+id/cart">
+            tools:layout_editor_absoluteX="403dp"
+            tools:layout_editor_absoluteY="15dp">
 
             <TextView
                 android:id="@+id/itemNumber"
@@ -157,90 +143,23 @@
                 app:layout_constraintStart_toEndOf="@+id/discountPrice"
                 app:layout_constraintTop_toTopOf="@+id/discountPrice" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout3"
-                android:layout_width="140dp"
-                android:layout_height="40dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/cart_whole_button_background"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/originalPrice">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/removeItem"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/cart_add_remove_button_background"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:id="@+id/imageView18"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_minus" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/addItem"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/cart_add_remove_button_background"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:id="@+id/imageView15"
-                        android:layout_width="20dp"
-                        android:layout_height="24dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_add" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <TextView
-                    android:id="@+id/productQuantity"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="Add"
-                    android:textAlignment="center"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:visibility="visible"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/addItem"
-                    app:layout_constraintStart_toEndOf="@+id/removeItem"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
             <Button
                 android:id="@+id/button7"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/button_background"
-                android:text="Buy now"
+                android:text="Book Now"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
+                app:layout_constraintTop_toBottomOf="@+id/discountPrice" />
 
             <TextView
                 android:id="@+id/textView6"

@@ -96,6 +96,17 @@ public class CartActivity extends AppCompatActivity {
                 totalItems = findTotalItemAndPrice();
                 totalItemsInCart.setText(totalItems);
 
+                if(CommonClass.GLOBAL_LIST_CLASS.cartList.size()>0){
+                    noItemsConst.setVisibility(View.GONE);
+                    checkoutConst.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.VISIBLE);
+
+                }else {
+                    noItemsConst.setVisibility(View.VISIBLE);
+                    checkoutConst.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.GONE);
+                }
+
             }
         };
     }
@@ -113,15 +124,22 @@ public class CartActivity extends AppCompatActivity {
         totalItems = findTotalItemAndPrice();
         totalItemsInCart.setText(totalItems);
 
-        if(CommonClass.GLOBAL_LIST_CLASS.cartList.size()>0){
-            noItemsConst.setVisibility(View.GONE);
-        }
-
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(CartActivity.this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         cartAdapter = new CartAdapter();
         recyclerView.setAdapter(cartAdapter);
+
+        if(CommonClass.GLOBAL_LIST_CLASS.cartList.size()>0){
+            noItemsConst.setVisibility(View.GONE);
+            checkoutConst.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
+
+        }else {
+            noItemsConst.setVisibility(View.VISIBLE);
+            checkoutConst.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.GONE);
+        }
     }
 
     private void onClickListeners() {

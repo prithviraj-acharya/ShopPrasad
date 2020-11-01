@@ -1,6 +1,9 @@
 package com.prithviraj.shopprasad.activities.customer;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -24,9 +27,13 @@ import com.android.volley.VolleyError;
 import com.prithviraj.myvollyimplementation.UtilityClasses.ApiErrorAction;
 import com.prithviraj.myvollyimplementation.VolleyServiceCall;
 import com.prithviraj.shopprasad.R;
+import com.prithviraj.shopprasad.adapters.AddressListAdapter;
+import com.prithviraj.shopprasad.adapters.AddressListAdapterForCheckout;
+import com.prithviraj.shopprasad.adapters.FeaturedProductListForCustomerAdapter;
 import com.prithviraj.shopprasad.dataModelClasses.AddressDataModel;
 import com.prithviraj.shopprasad.dataModelClasses.CartDataModel;
 import com.prithviraj.shopprasad.interfaces.SelectAddressButtonInterfaces;
+import com.prithviraj.shopprasad.interfaces.SelectAddressForCheckout;
 import com.prithviraj.shopprasad.utils.CommonClass;
 import com.prithviraj.shopprasad.utils.ErrorDialog;
 import com.prithviraj.shopprasad.utils.SharedPreference;
@@ -46,10 +53,10 @@ public class CheckoutActivity extends AppCompatActivity {
 
     TextView totalItems;
     SharedPreference sharedPreference;
-    TextView userName, userNumber, userAddress, userPinCode;
+    //TextView userName, userNumber, userAddress, userPinCode;
     int addressId=-1;
 
-    Button placeOrderButton, addAddressButton;
+    Button placeOrderButton;
     ImageView backIcon;
 
     String GOOGLE_PAY_PACKAGE_NAME = "com.google.android.apps.nbu.paisa.user";
@@ -57,6 +64,8 @@ public class CheckoutActivity extends AppCompatActivity {
 
     CheckBox googlePayCheckBox, cashOnDeliveryCheckBox;
 
+    RecyclerView recyclerView;
+    AddressListAdapterForCheckout addressListAdapterForCheckout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,19 +74,18 @@ public class CheckoutActivity extends AppCompatActivity {
 
         init();
         onClickListeners();
+        getAddresses(0);
 
-        CommonClass.GLOBAL_VARIABLE_CLASS.selectAddressButtonInterfaces = new SelectAddressButtonInterfaces() {
+
+
+        CommonClass.GLOBAL_VARIABLE_CLASS.selectAddressForCheckout = new SelectAddressForCheckout() {
             @Override
-            public void passPosition(int position) {
-                AddressDataModel addressDataModel = CommonClass.GLOBAL_LIST_CLASS.addressList.get(position);
+            public void addressPosition(int position) {
 
-                addressId = addressDataModel.getAddressId();
-                userName.setText(addressDataModel.getFullName());
-                userNumber.setText(addressDataModel.getPhone());
-                userPinCode.setText(addressDataModel.getPinCode());
-                userAddress.setText(addressDataModel.getHouseNumber());
+                addressId = CommonClass.GLOBAL_LIST_CLASS.addressList.get(position).getAddressId();
 
-                MyAddressActivity.myAddressActivity.finish();
+                getAddresses(position);
+
             }
         };
     }
@@ -91,13 +99,13 @@ public class CheckoutActivity extends AppCompatActivity {
 
         backIcon = findViewById(R.id.backIcon);
 
-        userName = findViewById(R.id.userName);
-        userNumber = findViewById(R.id.userNumber);
-        userAddress = findViewById(R.id.userAddress);
-        userPinCode = findViewById(R.id.userPinCode);
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(CheckoutActivity.this, RecyclerView.HORIZONTAL, false));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        addressListAdapterForCheckout= new AddressListAdapterForCheckout();
+        recyclerView.setAdapter(addressListAdapterForCheckout);
 
         placeOrderButton = findViewById(R.id.button);
-        addAddressButton = findViewById(R.id.button6);
 
         googlePayCheckBox = findViewById(R.id.googlePayCheckBox);
         cashOnDeliveryCheckBox = findViewById(R.id.cashOnDeliveryCheckBox);
@@ -155,14 +163,83 @@ public class CheckoutActivity extends AppCompatActivity {
             }
         });
 
-        addAddressButton.setOnClickListener(new View.OnClickListener() {
+//        addAddressButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(CheckoutActivity.this,MyAddressActivity.class);
+//                intent.putExtra("isSelectAddress",true);
+//                startActivity(intent);
+//            }
+//        });
+    }
+
+    public void getAddresses(final int position) {
+
+        CommonClass.GLOBAL_LIST_CLASS.addressList.clear();
+
+
+        final ProgressDialog dialog = ProgressDialog.show(CheckoutActivity.this, "",
+                "Loading. Please wait...", true);
+
+        Map<String, String> header = new HashMap<>();
+        header.put("Authorization", "Bearer "+sharedPreference.getUserToken());
+
+        new VolleyServiceCall(Request.Method.GET, Url.MY_ADDRESS_LIST, header, null, null, CheckoutActivity.this) {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(CheckoutActivity.this,MyAddressActivity.class);
-                intent.putExtra("isSelectAddress",true);
-                startActivity(intent);
+            public void onResponse(String s) {
+                // getDoctors(departmentId);
+
+                dialog.cancel();
+
+                Log.d("zxcv", s);
+
+                try {
+                    JSONArray array = new JSONObject(s).getJSONArray("data");
+
+
+                    for(int i = 0;i<array.length();i++){
+                        JSONObject jsonObject = array.getJSONObject(i);
+
+                        AddressDataModel addressDataModel = new AddressDataModel();
+
+                        addressDataModel.setSelected(i == position);
+                        addressDataModel.setAddressId(jsonObject.getInt("id"));
+                        addressId = jsonObject.getInt("id");
+                        addressDataModel.setFullName(jsonObject.getString("full_name"));
+                        addressDataModel.setHouseNumber(jsonObject.getString("house_number"));
+                        addressDataModel.setPinCode(jsonObject.getString("pincode"));
+                        addressDataModel.setArea(jsonObject.getString("area"));
+                        addressDataModel.setPhone(jsonObject.getString("phone"));
+                        addressDataModel.setLandmark(jsonObject.getString("landmark"));
+                        addressDataModel.setCity(jsonObject.getString("city"));
+                        addressDataModel.setStateId(jsonObject.getInt("state_id"));
+
+                        CommonClass.GLOBAL_LIST_CLASS.addressList.add(addressDataModel);
+                    }
+
+                    addressListAdapterForCheckout.notifyDataSetChanged();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
             }
-        });
+
+            @Override
+            public void onError(VolleyError error, String errorMessage) {
+                dialog.cancel();
+                Log.d("zxcv ", errorMessage);
+                ApiErrorAction apiErrorAction = new ApiErrorAction(error, errorMessage, CheckoutActivity.this) {
+                    @Override
+                    public void setAction(boolean action) {
+                        if (action)
+                            getAddresses(position);
+                    }
+                };
+                apiErrorAction.createDialog();
+            }
+        }.start();
     }
 
     private int findTotalItemAndPrice(){
@@ -215,11 +292,12 @@ public class CheckoutActivity extends AppCompatActivity {
                 if(cartDataModel.getDiscount()>0){
                     int discountPercentage = cartDataModel.getDiscount();
                     int discountedPrice = (int)(cartDataModel.getPrice()*((float) discountPercentage /100.0f));
-                    jsonObject.put("product_price", cartDataModel.getPrice()-discountedPrice);
+                    jsonObject.put("product_price", cartDataModel.getDiscount());
                 }
                 else {
                     jsonObject.put("product_price", cartDataModel.getPrice());
                 }
+
                 productsArray.put(jsonObject);
             }
 

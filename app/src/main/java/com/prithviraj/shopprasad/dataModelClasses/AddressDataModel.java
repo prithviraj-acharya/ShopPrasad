@@ -4,6 +4,7 @@ public class AddressDataModel {
 
     String fullName, pinCode, houseNumber, area, phone, landmark, city;
     int stateId, addressId;
+    boolean selected;
 
     public int getAddressId() {
         return addressId;
@@ -75,5 +76,13 @@ public class AddressDataModel {
 
     public void setStateId(int stateId) {
         this.stateId = stateId;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }

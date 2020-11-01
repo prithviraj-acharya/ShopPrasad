@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -41,6 +42,7 @@ public class ProductDetails extends AppCompatActivity {
     ImageView productImage, backIcon;
     TextView productName, productDesc, originalPrice, discountPrice, showMoreText;
     boolean showMoreBoolean = false;
+    Button buyNow;
 
     ConstraintLayout addItem, removeItem;
     TextView productQuantity;
@@ -60,7 +62,7 @@ public class ProductDetails extends AppCompatActivity {
         init();
         onClickListeners();
         getProductDetails();
-        getCart();
+        getCart(false);
     }
 
     void init() {
@@ -75,6 +77,7 @@ public class ProductDetails extends AppCompatActivity {
         originalPrice = findViewById(R.id.originalPrice);
         discountPrice = findViewById(R.id.discountPrice);
         showMoreText = findViewById(R.id.textView6);
+        buyNow = findViewById(R.id.button7);
 
         addItem = findViewById(R.id.addItem);
         removeItem = findViewById(R.id.removeItem);
@@ -94,6 +97,13 @@ public class ProductDetails extends AppCompatActivity {
             }
         });
 
+        buyNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addToCart(getIntent().getIntExtra("productId", 0), 1, true);
+            }
+        });
+
         addItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,7 +114,7 @@ public class ProductDetails extends AppCompatActivity {
                 if (quantity > 0) {
                     updateItemsToCart(getCartId(getIntent().getIntExtra("productId", 0)), getQuantity(getIntent().getIntExtra("productId", 0)) + 1);
                 } else {
-                    addToCart(getIntent().getIntExtra("productId", 0), 1);
+                    addToCart(getIntent().getIntExtra("productId", 0), 1, false);
                 }
 
             }
@@ -168,7 +178,7 @@ public class ProductDetails extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        getCart();
+        getCart(false);
     }
 
 
@@ -282,7 +292,7 @@ public class ProductDetails extends AppCompatActivity {
         return 0;
     }
 
-    public void getCart() {
+    public void getCart(final boolean goToCartDetails) {
 
         CommonClass.GLOBAL_LIST_CLASS.cartList.clear();
 
@@ -338,6 +348,11 @@ public class ProductDetails extends AppCompatActivity {
                     removeItem.setVisibility(View.GONE);
                 }
 
+                if(goToCartDetails){
+                    Intent in = new Intent(ProductDetails.this,CartActivity.class);
+                    startActivity(in);
+                }
+
             }
 
             @Override
@@ -347,7 +362,7 @@ public class ProductDetails extends AppCompatActivity {
                     @Override
                     public void setAction(boolean action) {
                         if (action)
-                            getCart();
+                            getCart(goToCartDetails);
                     }
                 };
                 apiErrorAction.createDialog();
@@ -356,7 +371,7 @@ public class ProductDetails extends AppCompatActivity {
 
     }
 
-    public void addToCart(final int productId, final int quantity) {
+    public void addToCart(final int productId, final int quantity, final boolean goToCartDetails) {
 
 
         Log.d("zxcv", "addToCart: " + productId);
@@ -373,7 +388,7 @@ public class ProductDetails extends AppCompatActivity {
             public void onResponse(String s) {
 
                 Log.d("zxcv", s);
-                getCart();
+                getCart(goToCartDetails);
 //
             }
 
@@ -385,7 +400,7 @@ public class ProductDetails extends AppCompatActivity {
                     @Override
                     public void setAction(boolean action) {
                         if (action)
-                            addToCart(productId, quantity);
+                            addToCart(productId, quantity, goToCartDetails);
                     }
                 };
                 apiErrorAction.createDialog();
@@ -408,7 +423,7 @@ public class ProductDetails extends AppCompatActivity {
             public void onResponse(String s) {
                 Log.d("zxcv", s);
 
-                getCart();
+                getCart(false);
             }
 
             @Override
@@ -438,7 +453,7 @@ public class ProductDetails extends AppCompatActivity {
             @Override
             public void onResponse(String s) {
 
-                getCart();
+                getCart(false);
 
                 Log.d("zxcv", s);
 //
