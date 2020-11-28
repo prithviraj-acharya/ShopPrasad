@@ -5,9 +5,17 @@ import java.util.ArrayList;
 public class OrderHitoryDataModel {
 
     int id, otp;
-    String orderId, name, address, phone, paymentType, status, deliveryBoyName, deliveryBoyNumber, amountPaid;
+    String orderId, name, address, phone, paymentType, status, deliveryBoyName, deliveryBoyNumber, amountPaid, orderDate;
     ArrayList<ProductDataModel> itemsOrdered;
 
+
+    public String getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(String orderDate) {
+        this.orderDate = orderDate;
+    }
 
     public String getAmountPaid() {
         return amountPaid;

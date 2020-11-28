@@ -180,6 +180,9 @@ public class PoojaSamagriActivity extends AppCompatActivity {
 
     public void addToCart(final int productId, final int quantity){
 
+        final ProgressDialog dialog = ProgressDialog.show(PoojaSamagriActivity.this, "",
+                "Loading. Please wait...", true);
+
 
         Log.d("zxcv", "addToCart: "+productId);
         Map<String, String> header = new HashMap<>();
@@ -193,6 +196,7 @@ public class PoojaSamagriActivity extends AppCompatActivity {
         new VolleyServiceCall(Request.Method.POST, Url.ADD_TO_CART, header, param, null, PoojaSamagriActivity.this) {
             @Override
             public void onResponse(String s) {
+                dialog.cancel();
 
                 Log.d("zxcv", s);
                 getCart();
@@ -201,7 +205,7 @@ public class PoojaSamagriActivity extends AppCompatActivity {
 
             @Override
             public void onError(VolleyError error, String errorMessage) {
-                //  dialog.cancel();
+                  dialog.cancel();
                 Log.d("zxcv ", errorMessage);
                 ApiErrorAction apiErrorAction = new ApiErrorAction(error, errorMessage, PoojaSamagriActivity.this) {
                     @Override

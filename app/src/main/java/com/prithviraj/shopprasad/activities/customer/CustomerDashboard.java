@@ -265,6 +265,12 @@ public class CustomerDashboard extends AppCompatActivity implements NavigationVi
             Intent in = new Intent(CustomerDashboard.this, MyAddressActivity.class);
             in.putExtra("isSelectAddress",false);
             startActivity(in);
+        }else if (id == R.id.nav_pooja_history) {
+            Intent in = new Intent(CustomerDashboard.this, PoojaBookingHistoryActivity.class);
+            startActivity(in);
+        }else if (id == R.id.nav_pandit_history) {
+            Intent in = new Intent(CustomerDashboard.this, PanditBookingHistoryActivity.class);
+            startActivity(in);
         } else if (id == R.id.nav_logout) {
             Intent in = new Intent(CustomerDashboard.this, LoginActivity.class);
             startActivity(in);
@@ -582,10 +588,14 @@ public class CustomerDashboard extends AppCompatActivity implements NavigationVi
         param.put("product_id",String.valueOf(productId));
         param.put("quantity",String.valueOf(quantity));
 
+        final ProgressDialog dialog = ProgressDialog.show(CustomerDashboard.this, "",
+                "Loading. Please wait...", true);
 
         new VolleyServiceCall(Request.Method.POST, Url.ADD_TO_CART, header, param, null, CustomerDashboard.this) {
             @Override
             public void onResponse(String s) {
+
+                dialog.cancel();
 
                 Log.d("zxcv", s);
                 getCart();
@@ -594,7 +604,7 @@ public class CustomerDashboard extends AppCompatActivity implements NavigationVi
 
             @Override
             public void onError(VolleyError error, String errorMessage) {
-                //  dialog.cancel();
+                  dialog.cancel();
                 Log.d("zxcv ", errorMessage);
                 ApiErrorAction apiErrorAction = new ApiErrorAction(error, errorMessage, CustomerDashboard.this) {
                     @Override

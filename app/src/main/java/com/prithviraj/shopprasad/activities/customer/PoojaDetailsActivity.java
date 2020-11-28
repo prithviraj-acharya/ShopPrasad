@@ -3,6 +3,7 @@ package com.prithviraj.shopprasad.activities.customer;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -48,15 +49,17 @@ public class PoojaDetailsActivity extends AppCompatActivity {
     Button bookPuja;
 
     private String dayOfWeek;
-    private int poojaId;
-    private String poojaPrice;
 
     boolean showMoreBoolean = false;
+
+    public static Activity PoojaDetailsActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pooja_details);
+
+        PoojaDetailsActivity = this;
 
         init();
         onClickListeners();
@@ -126,41 +129,45 @@ public class PoojaDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                poojaId = CommonClass.GLOBAL_LIST_CLASS.poojaList.get(getIntent().getIntExtra("position",0)).getId();
-                poojaPrice = CommonClass.GLOBAL_LIST_CLASS.poojaList.get(getIntent().getIntExtra("position",0)).getPujaPrice();
+                CommonClass.GLOBAL_VARIABLE_CLASS.poojaId = CommonClass.GLOBAL_LIST_CLASS.poojaList.get(getIntent().getIntExtra("position",0)).getId();
+                CommonClass.GLOBAL_VARIABLE_CLASS.poojaPrice = CommonClass.GLOBAL_LIST_CLASS.poojaList.get(getIntent().getIntExtra("position",0)).getPujaPrice();
 
-                // Get Current Date
-                final Calendar c = Calendar.getInstance();
-                int mYear = c.get(Calendar.YEAR);
-                int mMonth = c.get(Calendar.MONTH);
-                int mDay = c.get(Calendar.DAY_OF_MONTH);
-
-                Calendar minDate = Calendar.getInstance();
-                minDate.set(mYear, mMonth,mDay);
-
-                Calendar maxDate = Calendar.getInstance();
-                maxDate.set(mYear, mMonth+1,mDay+1);
-
-                DatePickerDialog datePickerDialog = new DatePickerDialog(PoojaDetailsActivity.this,
-                        new DatePickerDialog.OnDateSetListener() {
-
-                            @Override
-                            public void onDateSet(DatePicker view, int year,
-                                                  int monthOfYear, int dayOfMonth) {
-
-
-                                SimpleDateFormat simpledateformat = new SimpleDateFormat("EEEE");
-                                Date date = new Date(year, monthOfYear, dayOfMonth-1);
-                                dayOfWeek = simpledateformat.format(date);
-
-                                bookPooja(year + "-" + ((monthOfYear + 1)>9?(monthOfYear + 1):"0"+(monthOfYear + 1)) + "-" + (dayOfMonth>9?dayOfMonth:"0"+dayOfMonth));
-
-                                Log.d("zxcv", "onDateSet: "+dayOfWeek);
-                            }
-                        }, mYear, mMonth, mDay);
-
-                datePickerDialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
-                datePickerDialog.show();
+                Intent in = new Intent(PoojaDetailsActivity.this, MyAddressActivity.class);
+                in.putExtra("isSelectAddress", true);
+                startActivity(in);
+//
+//                // Get Current Date
+//                final Calendar c = Calendar.getInstance();
+//                int mYear = c.get(Calendar.YEAR);
+//                int mMonth = c.get(Calendar.MONTH);
+//                int mDay = c.get(Calendar.DAY_OF_MONTH);
+//
+//                Calendar minDate = Calendar.getInstance();
+//                minDate.set(mYear, mMonth,mDay);
+//
+//                Calendar maxDate = Calendar.getInstance();
+//                maxDate.set(mYear, mMonth+1,mDay+1);
+//
+//                DatePickerDialog datePickerDialog = new DatePickerDialog(PoojaDetailsActivity.this,
+//                        new DatePickerDialog.OnDateSetListener() {
+//
+//                            @Override
+//                            public void onDateSet(DatePicker view, int year,
+//                                                  int monthOfYear, int dayOfMonth) {
+//
+//
+//                                SimpleDateFormat simpledateformat = new SimpleDateFormat("EEEE");
+//                                Date date = new Date(year, monthOfYear, dayOfMonth-1);
+//                                dayOfWeek = simpledateformat.format(date);
+//
+//                                bookPooja(year + "-" + ((monthOfYear + 1)>9?(monthOfYear + 1):"0"+(monthOfYear + 1)) + "-" + (dayOfMonth>9?dayOfMonth:"0"+dayOfMonth));
+//
+//                                Log.d("zxcv", "onDateSet: "+dayOfWeek);
+//                            }
+//                        }, mYear, mMonth, mDay);
+//
+//                datePickerDialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
+//                datePickerDialog.show();
             }
         });
 
@@ -201,9 +208,10 @@ public class PoojaDetailsActivity extends AppCompatActivity {
         header.put("Authorization", "Bearer " + sharedPreference.getUserToken());
 
         Map<String, String> param = new HashMap<>();
-        param.put("puja_id", String.valueOf(poojaId));
+        param.put("puja_id", String.valueOf(CommonClass.GLOBAL_VARIABLE_CLASS.poojaId));
         param.put("date", date);
-        param.put("price", poojaPrice);
+        param.put("price", CommonClass.GLOBAL_VARIABLE_CLASS.poojaPrice);
+        param.put("address_id", "9");
 
 
         Log.d("zxcv: ", param.toString());

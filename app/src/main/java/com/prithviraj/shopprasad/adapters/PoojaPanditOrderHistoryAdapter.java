@@ -11,30 +11,37 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.prithviraj.shopprasad.R;
 import com.prithviraj.shopprasad.dataModelClasses.OrderHitoryDataModel;
+import com.prithviraj.shopprasad.dataModelClasses.PoojaPanditBookingDataModel;
 import com.prithviraj.shopprasad.utils.CommonClass;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 
-public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapter.OrderHistoryViewHolder> {
+public class PoojaPanditOrderHistoryAdapter extends RecyclerView.Adapter<PoojaPanditOrderHistoryAdapter.OrderHistoryViewHolder> {
 
+    ArrayList<PoojaPanditBookingDataModel> list;
+
+    public PoojaPanditOrderHistoryAdapter(ArrayList<PoojaPanditBookingDataModel> list) {
+        this.list = list;
+    }
 
     @NonNull
     @Override
     public OrderHistoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new OrderHistoryViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.order_history_item_layout, parent, false));
+        return new OrderHistoryViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.pooja_pandit_history_item_layout, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull OrderHistoryViewHolder holder, final int position) {
 
-        OrderHitoryDataModel orderHitoryDataModel = CommonClass.GLOBAL_LIST_CLASS.orderHistoryList.get(position);
+        PoojaPanditBookingDataModel dataModel = list.get(position);
 
-        holder.orderId.setText(orderHitoryDataModel.getOrderId());
-        holder.orderStatus.setText(orderHitoryDataModel.getStatus());
-        holder.paymentType.setText(orderHitoryDataModel.getPaymentType());
+        holder.name.setText(dataModel.getName());
+        holder.orderStatus.setText(dataModel.getStatus());
+        holder.price.setText("₹ "+dataModel.getPrice());
 
         Date parsed = null;
         String outputDate = "";
@@ -45,43 +52,35 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         SimpleDateFormat df_output = new SimpleDateFormat(outputFormat, java.util.Locale.getDefault());
 
         try {
-            parsed = df_input.parse(orderHitoryDataModel.getOrderDate());
+            parsed = df_input.parse(dataModel.getDate());
         } catch (ParseException e) {
             e.printStackTrace();
         }
         outputDate = df_output.format(parsed);
 
-        holder.otp.setText(outputDate);
-        holder.amountPaid.setText(String.format("₹ %s", orderHitoryDataModel.getAmountPaid()));
-
-        holder.viewDetails.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CommonClass.GLOBAL_VARIABLE_CLASS.orderHistoryClickInterface.setPosition(position);
-            }
-        });
+        holder.date.setText(outputDate);
+        holder.address.setText(dataModel.getAddress());
 
     }
 
     @Override
     public int getItemCount() {
-        return CommonClass.GLOBAL_LIST_CLASS.orderHistoryList.size();
+        return list.size();
     }
 
 
     static class OrderHistoryViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView orderId, orderStatus, paymentType, otp, amountPaid;
-        private Button viewDetails;
+        private TextView name, orderStatus, price, date, address;
 
         public OrderHistoryViewHolder(@NonNull View itemView) {
             super(itemView);
-            orderId = itemView.findViewById(R.id.orderId);
+
+            name = itemView.findViewById(R.id.orderId);
             orderStatus = itemView.findViewById(R.id.orderStatus);
-            paymentType = itemView.findViewById(R.id.paymentType);
-            otp = itemView.findViewById(R.id.otp);
-            amountPaid = itemView.findViewById(R.id.amountPaid);
-            viewDetails = itemView.findViewById(R.id.button8);
+            price = itemView.findViewById(R.id.paymentType);
+            date = itemView.findViewById(R.id.otp);
+            address = itemView.findViewById(R.id.amountPaid);
 
         }
     }

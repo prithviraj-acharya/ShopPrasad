@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -187,6 +188,9 @@ public class CartActivity extends AppCompatActivity {
 
     public void updateItemsToCart(final int cartItemId, final int quantity){
 
+        final ProgressDialog dialog = ProgressDialog.show(CartActivity.this, "",
+                "Loading. Please wait...", true);
+
         Map<String, String> header = new HashMap<>();
         header.put("Authorization", "Bearer " + sharedPreference.getUserToken());
 
@@ -198,6 +202,7 @@ public class CartActivity extends AppCompatActivity {
             @Override
             public void onResponse(String s) {
 
+                dialog.cancel();
 
                 Log.d("zxcv", s);
 //
@@ -205,7 +210,7 @@ public class CartActivity extends AppCompatActivity {
 
             @Override
             public void onError(VolleyError error, String errorMessage) {
-                //  dialog.cancel();
+                  dialog.cancel();
                 Log.d("zxcv ", errorMessage);
                 ApiErrorAction apiErrorAction = new ApiErrorAction(error, errorMessage, CartActivity.this) {
                     @Override
@@ -222,6 +227,9 @@ public class CartActivity extends AppCompatActivity {
 
     public void removeItemsFromCart(final int cartItemId){
 
+        final ProgressDialog dialog = ProgressDialog.show(CartActivity.this, "",
+                "Loading. Please wait...", true);
+
         Map<String, String> header = new HashMap<>();
         header.put("Authorization", "Bearer " + sharedPreference.getUserToken());
 
@@ -229,7 +237,7 @@ public class CartActivity extends AppCompatActivity {
         new VolleyServiceCall(Request.Method.GET, Url.REMOVE_ITEMS_FROM_CART+cartItemId+"/remove", header, null, null, CartActivity.this) {
             @Override
             public void onResponse(String s) {
-
+                dialog.cancel();
 
                 Log.d("zxcv", s);
 //
@@ -237,7 +245,7 @@ public class CartActivity extends AppCompatActivity {
 
             @Override
             public void onError(VolleyError error, String errorMessage) {
-                //  dialog.cancel();
+                  dialog.cancel();
                 Log.d("zxcv ", errorMessage);
                 ApiErrorAction apiErrorAction = new ApiErrorAction(error, errorMessage, CartActivity.this) {
                     @Override

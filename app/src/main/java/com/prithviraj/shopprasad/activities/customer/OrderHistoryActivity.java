@@ -135,13 +135,13 @@ public class OrderHistoryActivity extends AppCompatActivity {
                             OrderHitoryDataModel orderHitoryDataModel = new OrderHitoryDataModel();
                             orderHitoryDataModel.setOrderId(orderHistoryObject.getString("order_id"));
                             orderHitoryDataModel.setStatus(orderHistoryObject.getString("status"));
-
-//                            orderHitoryDataModel.setPaymentType(orderHistoryObject.getString("payment_type"));
+                            orderHitoryDataModel.setPaymentType(orderHistoryObject.getString("payment_type"));
+                            orderHitoryDataModel.setOrderDate(orderHistoryObject.getString("created_at"));
 //                            orderHitoryDataModel.setOtp(orderHistoryObject.getInt("otp"));
 
-//                            orderHitoryDataModel.setName(orderHistoryObject.getString("full_name"));
-//                            orderHitoryDataModel.setAddress(orderHistoryObject.getString("address"));
-//                            orderHitoryDataModel.setPhone(orderHistoryObject.getString("phone"));
+                            orderHitoryDataModel.setName(orderHistoryObject.getJSONObject("address").getString("full_name"));
+                            orderHitoryDataModel.setAddress(orderHistoryObject.getJSONObject("address").getString("house_number")+", "+orderHistoryObject.getJSONObject("address").getString("area"));
+                            orderHitoryDataModel.setPhone(orderHistoryObject.getJSONObject("address").getString("phone"));
 
                             JSONArray productsArray = orderHistoryObject.getJSONArray("order_product");
 

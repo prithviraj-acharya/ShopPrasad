@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.prithviraj.shopprasad">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -12,7 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.customer.PoojaDetailsActivity"></activity>
+        <activity android:name=".activities.customer.PanditBookingHistoryActivity"></activity>
+        <activity android:name=".activities.customer.PoojaBookingHistoryActivity" />
+        <activity android:name=".activities.customer.PoojaDetailsActivity" />
         <activity android:name=".activities.customer.OrderHistoryDetailsActivity" />
         <activity android:name=".activities.customer.OrderHistoryActivity" />
         <activity android:name=".activities.customer.OrderCompleteActivity" />

@@ -373,6 +373,10 @@ public class ProductDetails extends AppCompatActivity {
 
     public void addToCart(final int productId, final int quantity, final boolean goToCartDetails) {
 
+        final ProgressDialog dialog = ProgressDialog.show(ProductDetails.this, "",
+                "Loading. Please wait...", true);
+
+
 
         Log.d("zxcv", "addToCart: " + productId);
         Map<String, String> header = new HashMap<>();
@@ -387,6 +391,8 @@ public class ProductDetails extends AppCompatActivity {
             @Override
             public void onResponse(String s) {
 
+                dialog.cancel();
+
                 Log.d("zxcv", s);
                 getCart(goToCartDetails);
 //
@@ -394,7 +400,7 @@ public class ProductDetails extends AppCompatActivity {
 
             @Override
             public void onError(VolleyError error, String errorMessage) {
-                //  dialog.cancel();
+                  dialog.cancel();
                 Log.d("zxcv ", errorMessage);
                 ApiErrorAction apiErrorAction = new ApiErrorAction(error, errorMessage, ProductDetails.this) {
                     @Override
@@ -411,6 +417,10 @@ public class ProductDetails extends AppCompatActivity {
 
     public void updateItemsToCart(final int cartItemId, final int quantity) {
 
+        final ProgressDialog dialog = ProgressDialog.show(ProductDetails.this, "",
+                "Loading. Please wait...", true);
+
+
         Map<String, String> header = new HashMap<>();
         header.put("Authorization", "Bearer " + sharedPreference.getUserToken());
 
@@ -422,13 +432,14 @@ public class ProductDetails extends AppCompatActivity {
             @Override
             public void onResponse(String s) {
                 Log.d("zxcv", s);
-
+                dialog.cancel();
                 getCart(false);
             }
 
             @Override
             public void onError(VolleyError error, String errorMessage) {
                 //  dialog.cancel();
+                dialog.cancel();
                 Log.d("zxcv ", errorMessage);
                 ApiErrorAction apiErrorAction = new ApiErrorAction(error, errorMessage, ProductDetails.this) {
                     @Override
@@ -445,6 +456,10 @@ public class ProductDetails extends AppCompatActivity {
 
     public void removeItemsFromCart(final int cartItemId) {
 
+        final ProgressDialog dialog = ProgressDialog.show(ProductDetails.this, "",
+                "Loading. Please wait...", true);
+
+
         Map<String, String> header = new HashMap<>();
         header.put("Authorization", "Bearer " + sharedPreference.getUserToken());
 
@@ -452,7 +467,7 @@ public class ProductDetails extends AppCompatActivity {
         new VolleyServiceCall(Request.Method.GET, Url.REMOVE_ITEMS_FROM_CART + cartItemId + "/remove", header, null, null, ProductDetails.this) {
             @Override
             public void onResponse(String s) {
-
+                dialog.cancel();
                 getCart(false);
 
                 Log.d("zxcv", s);
@@ -461,7 +476,7 @@ public class ProductDetails extends AppCompatActivity {
 
             @Override
             public void onError(VolleyError error, String errorMessage) {
-                //  dialog.cancel();
+                dialog.cancel();
                 Log.d("zxcv ", errorMessage);
                 ApiErrorAction apiErrorAction = new ApiErrorAction(error, errorMessage, ProductDetails.this) {
                     @Override

@@ -34,6 +34,10 @@ public class Url {
     public static final String MY_ORDERS = BASE_URL + "customer/orders";
     public static final String BOOK_POOJA = BASE_URL + "customer/puja/store";
     public static final String BOOK_PANDIT = BASE_URL + "customer/pandit/store";
+    public static final String GET_POOJA_HISTORY = BASE_URL + "customer/puja/list";
+    public static final String GET_PANDIT_HISTORY = BASE_URL + "customer/pandit/list";
+    public static final String POOJA_SEARCH = BASE_URL + "customer/puja/search";
+
 
 
 

@@ -300,8 +300,8 @@ public class CheckoutActivity extends AppCompatActivity {
             JSONObject orderOb = new JSONObject();
 
             orderOb.put("address_id", addressId);
-//            orderOb.put("payment_type", cashOnDelivery?"Cash On Delivery": "Google Pay");
-//            orderOb.put("transaction_id", transactionId);
+            orderOb.put("payment_type", cashOnDelivery?"Cash On Delivery": "Google Pay");
+            orderOb.put("transaction_id", transactionId);
 
             JSONArray productsArray = new JSONArray();
 

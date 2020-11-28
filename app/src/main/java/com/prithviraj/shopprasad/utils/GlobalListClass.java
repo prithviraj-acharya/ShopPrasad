@@ -5,6 +5,7 @@ import com.prithviraj.shopprasad.dataModelClasses.CartDataModel;
 import com.prithviraj.shopprasad.dataModelClasses.OrderHitoryDataModel;
 import com.prithviraj.shopprasad.dataModelClasses.PanditProfilePujaDataModel;
 import com.prithviraj.shopprasad.dataModelClasses.PoojaDataModel;
+import com.prithviraj.shopprasad.dataModelClasses.PoojaPanditBookingDataModel;
 
 import java.util.ArrayList;
 
@@ -20,5 +21,7 @@ public class GlobalListClass {
     public ArrayList<String> staticPujaList = new ArrayList<>();
     public ArrayList<OrderHitoryDataModel> orderHistoryList = new ArrayList<>();
     public ArrayList<PoojaDataModel> featuredProductList = new ArrayList<>();
+    public ArrayList<PoojaPanditBookingDataModel> poojaHistoryList = new ArrayList<>();
+    public ArrayList<PoojaPanditBookingDataModel> panditHistoryList = new ArrayList<>();
 
 }

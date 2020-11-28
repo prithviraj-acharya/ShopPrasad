@@ -179,6 +179,8 @@ public class ProductsActivity extends AppCompatActivity {
 
     public void addToCart(final int productId, final int quantity){
 
+        final ProgressDialog dialog = ProgressDialog.show(ProductsActivity.this, "",
+                "Loading. Please wait...", true);
 
         Log.d("zxcv", "addToCart: "+productId);
         Map<String, String> header = new HashMap<>();
@@ -193,6 +195,8 @@ public class ProductsActivity extends AppCompatActivity {
             @Override
             public void onResponse(String s) {
 
+                dialog.cancel();
+
                 Log.d("zxcv", s);
                 getCart();
 //
@@ -200,7 +204,7 @@ public class ProductsActivity extends AppCompatActivity {
 
             @Override
             public void onError(VolleyError error, String errorMessage) {
-                //  dialog.cancel();
+                  dialog.cancel();
                 Log.d("zxcv ", errorMessage);
                 ApiErrorAction apiErrorAction = new ApiErrorAction(error, errorMessage, ProductsActivity.this) {
                     @Override

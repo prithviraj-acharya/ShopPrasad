@@ -46,9 +46,9 @@ public class OrderHistoryDetailsActivity extends AppCompatActivity {
 
         totalItemsInCart = findViewById(R.id.totalItemsInCart);
 
-//        userName.setText("Name: "+orderHitoryDataModel.getName());
-//        userNumber.setText("Phone Number: "+orderHitoryDataModel.getPhone());
-//        userAddress.setText("Address: "+orderHitoryDataModel.getAddress());
+        userName.setText("Name: "+orderHitoryDataModel.getName());
+        userNumber.setText("Phone Number: "+orderHitoryDataModel.getPhone());
+        userAddress.setText("Address: "+orderHitoryDataModel.getAddress());
 
         totalItemsInCart.setText(String.format("%d Total items: ₹%s", orderHitoryDataModel.getItemsOrdered().size(), orderHitoryDataModel.getAmountPaid()));
 

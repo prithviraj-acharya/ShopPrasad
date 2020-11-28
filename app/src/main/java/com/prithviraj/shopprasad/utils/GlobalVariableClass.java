@@ -33,4 +33,7 @@ public class GlobalVariableClass {
     public ClickFeaturedProductList clickFeaturedProductList;
     public AddToCartFeaturedProductList addToCartFeaturedProductList;
     public SelectAddressForCheckout selectAddressForCheckout;
+
+    public int poojaId =0;
+    public String poojaPrice = "";
 }

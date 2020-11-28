@@ -2,10 +2,14 @@
     <group>
         <item android:id="@+id/nav_profile"
             android:title="My Profile" />
-        <item android:id="@+id/nav_orders"
-            android:title="My Orders" />
         <item android:id="@+id/nav_address"
             android:title="My Addresses" />
+        <item android:id="@+id/nav_orders"
+            android:title="My Orders" />
+        <item android:id="@+id/nav_pooja_history"
+            android:title="My Pooja Orders" />
+        <item android:id="@+id/nav_pandit_history"
+            android:title="My Pandit Orders" />
         <item android:id="@+id/nav_logout"
             android:title="Logout" />
     </group>
